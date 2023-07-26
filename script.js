@@ -1,7 +1,71 @@
+
 // on récupère le body du HTML dans le DOM
 const body = document.body;
 
 
+// fonction d'animation lors du survol des éléments
+function hover(svgPath) {
+  anime.remove(svgPath)
+
+  anime({   // éléments cibles
+    targets: svgPath,
+    // équivalent de "background-color" pour les SVG
+    fill: ['#fefefa', '#FFE500'],
+
+    // équivalent de "border"
+    stroke: ['#fefefa', '#FFE500'],
+
+    // durée de l'animation
+    duration: 1000,
+
+    // nombre d'itérations
+    loop: false,
+
+  })
+}
+
+function hoverReverse(svgPath) {
+  anime.remove(svgPath)
+
+  anime({   // éléments cibles
+    targets: svgPath,
+    // équivalent de "background-color" pour les SVG
+    fill: ['#FFE500', '#fefefa'],
+
+    // équivalent de "border"
+    stroke: ['#FFE500', '#fefefa'],
+
+    // durée de l'animation
+    duration: 1000,
+
+    // nombre d'itérations
+    loop: false,
+
+  })
+}
+function display(popupDiv) {
+  anime.remove(popupDiv)
+  anime({
+    targets: popupDiv,
+    opacity: ['0%', '100%'],
+    translateY: -100,
+    duration: 1000,
+    loop: false,
+  })
+}
+
+function displayReverse(popupDiv) {
+  anime.remove(popupDiv)
+  anime({
+    targets: popupDiv,
+    opacity: ['100%', '0%'],
+    translateY: 100,
+    duration: 1000,
+    loop: false,
+    easing: 'easeInQuad',
+    
+  })
+}
 
 
 
@@ -51,19 +115,19 @@ async function getCountryChart(listid, chartRange) {
 async function mainFunction() {
   let countries = await getChartList();
 
-  // // test avec un seul pays
-  let tracks = await getCountryChart(countries[0].listid, 1);
-  countries[0].title = tracks[0].title
-  countries[0].artist = tracks[0].subtitle
-  countries[0].images = tracks[0].images
-  // // fin du test
+  // // // test avec un seul pays
+  // let tracks = await getCountryChart(countries[0].listid, 1);
+  // countries[0].title = tracks[0].title
+  // countries[0].artist = tracks[0].subtitle
+  // countries[0].images = tracks[0].images
+  // // // fin du test
 
   // for await (let country of countries) {
-  //   let tracks = await getCountryChart(country.listid, 1);
-  //   country.title = tracks[0].title
-  //   country.artist = tracks[0].subtitle
-  //   country.images = tracks[0].images
-  //   console.log("pays : " + country.id + ", chanson : " + country.title + ", artiste : " + country.artist + ", liste d'images : " + country.images)
+   let tracks = await getCountryChart(country.listid, 1);
+   country.title = tracks[0].title
+   country.artist = tracks[0].subtitle
+   country.images = tracks[0].images
+   console.log("pays : " + country.id + ", chanson : " + country.title + ", artiste : " + country.artist + ", liste d'images : " + country.images)
   // }
 
 
@@ -100,11 +164,17 @@ async function mainFunction() {
 
 
     // injection des données du tableau Countries
-    popupHeader.innerText = '#1 in ' + country.name;
+    popupHeader.innerHTML = '#<b>1</b> in ' + country.name;
 
     popupTitle.innerText = country.title;
 
     popupArtist.innerText = country.artist;
+
+    if (country.images != undefined) {
+      popupDivImg.setAttribute('style', `background-image: ${country.images[0]}`)
+    } else {
+      popupDivImg.setAttribute('style', `background-image: url(./Carte/retro-vinyl-record-icon-vector-illustration.jpg)`)
+    }
 
     popup.appendChild(popupDivImg)
     popup.appendChild(popupDivText)
@@ -115,92 +185,35 @@ async function mainFunction() {
 
     country.position = country.HTMLelement.getBoundingClientRect()
     country.popup = popup;
+  }
 
-    var timeline = anime.timeline({autoplay:false});
+  setCountryElement(countries[0]);
 
-    // fonction d'animation lors du survol des éléments
-    timeline.add({}
-      // on enlève les précédentes targets 
-      // pour éviter un comportement bizarre de répétition de l'animation
-      anime.remove(country);
-
-      // animejs + paramètres
-      // eslint-disable-next-line no-undef
-      anime({
-        // éléments cibles
-        targets: `#${country.id}`,
-
-        // équivalent de "background-color" pour les SVG
-        fill: [color1, color2],
-
-        // équivalent de "border"
-        stroke: [color1, color2],
-
-        // durée de l'animation
-        duration: 5000,
-
-        // nombre d'itérations
-        loop: false
-      })
+  function assignEvents(country) {
 
 
-    }
-
-    var popUpAppear = function (country) {
-      console.log('up...')
-
-      // eslint-disable-next-line no-undef
-      // eslint-disable-next-line no-undef
-      anime({
-        targets: '.popup-div',
-        opacity: [0, 100],
-        translateY: -100,
-        duration: 1000,
-        loop: false,
-      })
-    }
-
-    // var popUpDisappear = function (country) {
-    //   console.log('... and awaaay')
-    //   // eslint-disable-next-line no-undef
-    //   // eslint-disable-next-line no-undef
-    //   anime({
-    //     targets: '.popup-div',
-    //     opacity: [100, 0],
-    //     translateY: 100,
-    //     duration: 1000,
-    //     loop: false,
-    //     autoplay: false
-    //   })
-
-    // }
-
-    // dire que c'est un pays actif en ajoutant une classe
-    //  country.HTMLelement.classList.
-    // lorsqu'on rentre dans la zone du pays avec le curseur
     country.HTMLelement.onmouseenter = function () {
       console.log(country.popup)
       body.appendChild(country.popup)
       country.popup.setAttribute('style', `top: ${parseInt(country.position.y)}px;left: ${parseInt(country.position.x)}px`)
 
-      // animation de blanc cassé à jaune
-      // hoverAnim(country, '#fefefa', '#ffe500').play;
-      popUpAppear(country).play;
-
-
-      // on insère dans le html
+      hover(country.HTMLelement);
+      display(country.popup)
     };
 
     // et l'inverse quand on quitte le pays pour revenir à l'état de base
     country.HTMLelement.onmouseleave = function () {
-      // hoverAnim(country, '#ffe500', '#fefefa').play;
-      popUpAppear(country).reverse;
+      hoverReverse(country.HTMLelement);
+      displayReverse(country.popup)
       setTimeout(function () {
         country.popup.remove();
-      }, 1050)
+      }, 1200)
     }
   }
-  setCountryElement(countries[0]);
+
+  assignEvents(countries[0])
+
+
   console.log(countries[0])
 }
 
