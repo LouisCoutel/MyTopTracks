@@ -5,8 +5,10 @@ const body = document.body;
 
 // fonction d'animation lors du survol des éléments
 function hover(svgPath) {
+  // eslint-disable-next-line no-undef
   anime.remove(svgPath)
 
+  // eslint-disable-next-line no-undef
   anime({   // éléments cibles
     targets: svgPath,
     // équivalent de "background-color" pour les SVG
@@ -25,8 +27,10 @@ function hover(svgPath) {
 }
 
 function hoverReverse(svgPath) {
+  // eslint-disable-next-line no-undef
   anime.remove(svgPath)
 
+  // eslint-disable-next-line no-undef
   anime({   // éléments cibles
     targets: svgPath,
     // équivalent de "background-color" pour les SVG
@@ -44,7 +48,9 @@ function hoverReverse(svgPath) {
   })
 }
 function display(popupDiv) {
+  // eslint-disable-next-line no-undef
   anime.remove(popupDiv)
+  // eslint-disable-next-line no-undef
   anime({
     targets: popupDiv,
     opacity: ['0%', '100%'],
@@ -55,7 +61,9 @@ function display(popupDiv) {
 }
 
 function displayReverse(popupDiv) {
+  // eslint-disable-next-line no-undef
   anime.remove(popupDiv)
+  // eslint-disable-next-line no-undef
   anime({
     targets: popupDiv,
     opacity: ['100%', '0%'],
@@ -63,7 +71,7 @@ function displayReverse(popupDiv) {
     duration: 1000,
     loop: false,
     easing: 'easeInQuad',
-    
+
   })
 }
 
@@ -122,13 +130,13 @@ async function mainFunction() {
   // countries[0].images = tracks[0].images
   // // // fin du test
 
-  // for await (let country of countries) {
-   let tracks = await getCountryChart(country.listid, 1);
-   country.title = tracks[0].title
-   country.artist = tracks[0].subtitle
-   country.images = tracks[0].images
-   console.log("pays : " + country.id + ", chanson : " + country.title + ", artiste : " + country.artist + ", liste d'images : " + country.images)
-  // }
+  for await (let country of countries) {
+    let tracks = await getCountryChart(country.listid, 1);
+    country.title = tracks[0].title
+    country.artist = tracks[0].subtitle
+    country.images = tracks[0].images
+    console.log("pays : " + country.id + ", chanson : " + country.title + ", artiste : " + country.artist + ", liste d'images : " + country.images)
+  }
 
 
   function setCountryElement(country) {
@@ -182,21 +190,16 @@ async function mainFunction() {
     popupDivText.appendChild(popupHeader)
     popupDivText.appendChild(popupTitle)
     popupDivText.appendChild(popupArtist)
-
-    country.position = country.HTMLelement.getBoundingClientRect()
     country.popup = popup;
   }
-
-  setCountryElement(countries[0]);
 
   function assignEvents(country) {
 
 
     country.HTMLelement.onmouseenter = function () {
-      console.log(country.popup)
+      country.position = country.HTMLelement.getBoundingClientRect()
       body.appendChild(country.popup)
       country.popup.setAttribute('style', `top: ${parseInt(country.position.y)}px;left: ${parseInt(country.position.x)}px`)
-
       hover(country.HTMLelement);
       display(country.popup)
     };
@@ -205,16 +208,13 @@ async function mainFunction() {
     country.HTMLelement.onmouseleave = function () {
       hoverReverse(country.HTMLelement);
       displayReverse(country.popup)
-      setTimeout(function () {
-        country.popup.remove();
-      }, 1200)
     }
   }
 
-  assignEvents(countries[0])
-
-
-  console.log(countries[0])
+  countries.forEach(country => {
+    setCountryElement(country)
+    assignEvents(country)
+  });
 }
 
 mainFunction();
