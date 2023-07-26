@@ -3,7 +3,6 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Catamaran:wght@600&display=swap");
 
-
 * {
   margin: 0;
   padding: 0;
@@ -68,7 +67,7 @@ body {
   fill: #ffe500;
 } */
 
-.pays-inactifs {
+.land {
   fill: #edeae0;
 }
 
@@ -95,3 +94,69 @@ body {
   flex-grow: 0;
   z-index: 1;
 }
+
+/* PopUp */
+
+/* Auto layout */
+.popUp-div {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 8px;
+  gap: 8px;
+
+  position: relative;
+  width: fit-content;
+
+  background: rgba(255, 255, 255, 0.5);
+  border-bottom: 2px solid #000000;
+
+  box-shadow: 0px -1px 10px 10px rgba(0, 0, 0, 0.1),
+    0px 10px 8px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(4px);
+  /* Note: backdrop-filter has minimal browser support */
+  border-radius: 5px;
+}
+
+.popUp-div-img {
+  /* Auto layout */
+  display: flex;
+  flex-direction: row;
+  width: 72px;
+  height: 72px;
+  background: url(Prince_1999.jpg);
+  border: 1px solid #000000;
+  box-shadow: inset -2px -2px 2px 1px rgba(0, 0, 0, 0.15),
+    inset 2px 2px 2px 1px rgba(0, 0, 0, 0.15);
+  border-radius: 5px;
+}
+
+/* Frame 4 */
+
+/* Auto layout */
+
+.popUp-div-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 2px;
+
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #313131;
+}
+
+.popUp-header {
+  font-size: 14px;
+  line-height: 17px;
+}
+/* identical to box height */
+
+.popUp-title {
+  font-weight: 700;
+}
+
+/* Inside auto layout */
