@@ -4,27 +4,30 @@ const body = document.body;
 
 
 // superpose un écran d'animation sur la page pendant 100 secondes
+// eslint-disable-next-line no-unused-vars
 function loadSequence() {
   // on crée l'élément
   let loadOverlay = document.createElement('div')
   // on lui donne un identifiant
   loadOverlay.id = 'load-overlay';
   // et des styles css
-  loadOverlay.setAttribute('style', 'backdrop-filter: blur(100px); z-index: 3; background: #fefefa; width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; text-justify: center; text-align: center; font-size: 54px; font-weight: 400')
+  loadOverlay.setAttribute('style', 'backdrop-filter: blur(2px); z-index: 3; background: #fefefa; width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; text-justify: center; text-align: center; font-size: 54px; font-weight: 400')
   // et on l'ajoute dans le HTML
   body.appendChild(loadOverlay);
 
   // animation de chargement
   function loadAnime() {
     // s'execute quand même si on change d'onglet
+    // eslint-disable-next-line no-undef
     anime.suspendWhenDocumentHidden = false;
 
+    // eslint-disable-next-line no-undef
     anime({
       targets: loadOverlay,
       duration: 100000,
       loop: false,
       easing: 'linear',
-      opacity: ['50%','1%'],
+      opacity: ['90%', '1%'],
 
       // on affiche la progression en % en temps réel dans un élement paragraphe
       update: function (anim) {
@@ -121,7 +124,7 @@ function displayReverse(popupDiv) {
   })
 
   // pareil je tente une promesse pour supprimer l'élément
-  displayReverse.finished.then(body.removeChild(popupDiv))
+  // displayReverse.finished.then(body.removeChild(popupDiv))
 
 }
 
@@ -133,7 +136,7 @@ async function getChartList() {
   const options = {
     method: 'GET',
     headers: {
-      'X-RapidAPI-Key': '7e40b53c7amsh62515ff28adca5fp199097jsn2c30ddb1adca',
+      'X-RapidAPI-Key': 'bb7644f4camsh704f7d5613a7768p12b59bjsn15758ea5893b',
       'X-RapidAPI-Host': 'shazam.p.rapidapi.com'
     }
   };
@@ -153,7 +156,7 @@ async function getCountryChart(listid, chartRange) {
   const options = {
     method: 'GET',
     headers: {
-      'X-RapidAPI-Key': '7e40b53c7amsh62515ff28adca5fp199097jsn2c30ddb1adca',
+      'X-RapidAPI-Key': 'bb7644f4camsh704f7d5613a7768p12b59bjsn15758ea5893b',
       'X-RapidAPI-Host': 'shazam.p.rapidapi.com'
     }
   };
@@ -174,24 +177,25 @@ async function getCountryChart(listid, chartRange) {
 // fonction qui sert juste à englober la séquence d'éxécution 
 // chartList -> countryCharts -> ?
 async function mainFunction() {
-
+  console.log('start')
   // on récupère la liste des charts
   let countries = await getChartList();
+  console.log(countries)
 
   // // // test avec un seul pays
-  let tracks = await getCountryChart(countries[3].listid, 1);
-  countries[3].title = tracks[0].title
-  countries[3].artist = tracks[0].subtitle
-  countries[3].images = tracks[0].images
+  // let tracks = await getCountryChart(countries[3].listid, 1);
+  // countries[3].title = tracks[0].title
+  // countries[3].artist = tracks[0].subtitle
+  // countries[3].images = tracks[0].images
   // // // fin du test
 
-  // for await (let country of countries) {
-  //   let tracks = await getCountryChart(country.listid, 1);
-  //   country.title = tracks[0].title
-  //   country.artist = tracks[0].subtitle
-  //   country.images = tracks[0].images
-  //   console.log("pays : " + country.id + ", chanson : " + country.title + ", artiste : " + country.artist + ", liste d'images : " + country.images)
-  // }
+   for await (let country of countries) {
+     let tracks = await getCountryChart(country.listid, 1);
+     country.title = tracks[0].title
+     country.artist = tracks[0].subtitle
+     country.images = tracks[0].images
+     console.log("pays : " + country.id + ", chanson : " + country.title + ", artiste : " + country.artist + ", liste d'images : " + country.images)
+   }
 
   // fonction qui associe élément HTML (path SVG) et pays de la liste
   function setCountryElement(country) {
@@ -267,7 +271,7 @@ async function mainFunction() {
 
       // on donne une position au pop up grace à la position du pays
       country.popup.setAttribute('style', `top: ${parseInt(country.position.y)}px;left: ${parseInt(country.position.x)}px`)
-      
+
       // on joue l'animation de survol
       hover(country.HTMLelement);
 
@@ -282,16 +286,20 @@ async function mainFunction() {
     }
   }
 
-  // countries.forEach(country => {
-  //   setCountryElement(country)
-  //   assignEvents(country)
-  // });
+   countries.forEach(country => {
+     setCountryElement(country)
+     assignEvents(country)
+   });
 
-  setCountryElement(countries[3])
-  assignEvents(countries[3])
+  // setCountryElement(countries[3])
+  // console.log('elements')
+
+  // assignEvents(countries)
+  // console.log(countries[3])
 }
+
 // séquence d'éxécution
-loadSequence();
+// loadSequence();
 mainFunction();
 
 
