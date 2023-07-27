@@ -3,6 +3,33 @@
 const body = document.body;
 
 
+
+function loadSequence() {
+  let loadOverlay = document.createElement('div')
+  loadOverlay.id = 'load-overlay';
+  loadOverlay.setAttribute('style', 'z-index: 3; background-color: #fefefa; width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; text-justify: center; text-align: center; font-size: 54px; font-weight: 400')
+  body.appendChild(loadOverlay);
+
+  function loadAnime() {
+    anime({
+      targets: loadOverlay,
+      duration: 100000,
+      loop: false,
+      backdropFilter: ['blur(80px)', 'blur(0px)'],
+      opacity: ['100%', '0%'],
+      easing: 'linear',
+      update: function (anim) {
+        loadOverlay.innerHTML = '<p style="display: block; margin: auto">loading... <br>' + Math.round(anim.progress) + '%</p>';
+      }
+    })
+  }
+
+  loadAnime();
+  loadAnime.finished.then(body.removeChild(loadOverlay))
+}
+
+
+
 // fonction d'animation lors du survol des éléments
 function hover(svgPath) {
   // eslint-disable-next-line no-undef
@@ -46,6 +73,7 @@ function hoverReverse(svgPath) {
     loop: false,
 
   })
+
 }
 function display(popupDiv) {
   // eslint-disable-next-line no-undef
@@ -73,6 +101,8 @@ function displayReverse(popupDiv) {
     easing: 'easeInQuad',
 
   })
+  displayReverse.finished.then(body.removeChild(popupDiv))
+
 }
 
 
@@ -118,25 +148,27 @@ async function getCountryChart(listid, chartRange) {
 
 
 
+// --------------------------------------------------------------
+
 // fonction qui sert juste à englober la séquence d'éxécution 
 // chartList -> countryCharts -> ?
 async function mainFunction() {
   let countries = await getChartList();
 
   // // // test avec un seul pays
-  // let tracks = await getCountryChart(countries[0].listid, 1);
-  // countries[0].title = tracks[0].title
-  // countries[0].artist = tracks[0].subtitle
-  // countries[0].images = tracks[0].images
+  let tracks = await getCountryChart(countries[3].listid, 1);
+  countries[3].title = tracks[0].title
+  countries[3].artist = tracks[0].subtitle
+  countries[3].images = tracks[0].images
   // // // fin du test
 
-  for await (let country of countries) {
-    let tracks = await getCountryChart(country.listid, 1);
-    country.title = tracks[0].title
-    country.artist = tracks[0].subtitle
-    country.images = tracks[0].images
-    console.log("pays : " + country.id + ", chanson : " + country.title + ", artiste : " + country.artist + ", liste d'images : " + country.images)
-  }
+  // for await (let country of countries) {
+  //   let tracks = await getCountryChart(country.listid, 1);
+  //   country.title = tracks[0].title
+  //   country.artist = tracks[0].subtitle
+  //   country.images = tracks[0].images
+  //   console.log("pays : " + country.id + ", chanson : " + country.title + ", artiste : " + country.artist + ", liste d'images : " + country.images)
+  // }
 
 
   function setCountryElement(country) {
@@ -179,7 +211,7 @@ async function mainFunction() {
     popupArtist.innerText = country.artist;
 
     if (country.images != undefined) {
-      popupDivImg.setAttribute('style', `background-image: ${country.images[0]}`)
+      popupDivImg.setAttribute('style', `background-image: url(${country.images.coverart})`)
     } else {
       popupDivImg.setAttribute('style', `background-image: url(./Carte/retro-vinyl-record-icon-vector-illustration.jpg)`)
     }
@@ -211,13 +243,17 @@ async function mainFunction() {
     }
   }
 
-  countries.forEach(country => {
-    setCountryElement(country)
-    assignEvents(country)
-  });
-}
+  // countries.forEach(country => {
+  //   setCountryElement(country)
+  //   assignEvents(country)
+  // });
 
-mainFunction();
+  setCountryElement(countries[3])
+  assignEvents(countries[3])
+}
+loadSequence();
+
+// mainFunction();
 
 
 
