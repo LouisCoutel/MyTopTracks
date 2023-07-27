@@ -3,21 +3,30 @@
 const body = document.body;
 
 
-
+// superpose un écran d'animation sur la page pendant 100 secondes
 function loadSequence() {
+  // on crée l'élément
   let loadOverlay = document.createElement('div')
+  // on lui donne un identifiant
   loadOverlay.id = 'load-overlay';
-  loadOverlay.setAttribute('style', 'z-index: 3; background-color: #fefefa; width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; text-justify: center; text-align: center; font-size: 54px; font-weight: 400')
+  // et des styles css
+  loadOverlay.setAttribute('style', 'backdrop-filter: blur(100px); z-index: 3; background: #fefefa; width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; text-justify: center; text-align: center; font-size: 54px; font-weight: 400')
+  // et on l'ajoute dans le HTML
   body.appendChild(loadOverlay);
 
+  // animation de chargement
   function loadAnime() {
+    // s'execute quand même si on change d'onglet
+    anime.suspendWhenDocumentHidden = false;
+
     anime({
       targets: loadOverlay,
       duration: 100000,
       loop: false,
-      backdropFilter: ['blur(80px)', 'blur(0px)'],
-      opacity: ['100%', '0%'],
       easing: 'linear',
+      opacity: ['50%','1%'],
+
+      // on affiche la progression en % en temps réel dans un élement paragraphe
       update: function (anim) {
         loadOverlay.innerHTML = '<p style="display: block; margin: auto">loading... <br>' + Math.round(anim.progress) + '%</p>';
       }
@@ -27,6 +36,8 @@ function loadSequence() {
   }
 
   loadAnime();
+
+  // en chantier je tente une promesse pour détruire l'élément quand l'animation est finie mais ça marche po
   loadAnime.finished.then(body.removeChild(loadOverlay))
 }
 
@@ -55,6 +66,8 @@ function hover(svgPath) {
   })
 }
 
+
+// animation inversée pour quand sort
 function hoverReverse(svgPath) {
   // eslint-disable-next-line no-undef
   anime.remove(svgPath)
@@ -77,6 +90,8 @@ function hoverReverse(svgPath) {
   })
 
 }
+
+// animation d'apparition du popup
 function display(popupDiv) {
   // eslint-disable-next-line no-undef
   anime.remove(popupDiv)
@@ -90,6 +105,7 @@ function display(popupDiv) {
   })
 }
 
+// pour faire disparaitre
 function displayReverse(popupDiv) {
   // eslint-disable-next-line no-undef
   anime.remove(popupDiv)
@@ -103,6 +119,8 @@ function displayReverse(popupDiv) {
     easing: 'easeInQuad',
 
   })
+
+  // pareil je tente une promesse pour supprimer l'élément
   displayReverse.finished.then(body.removeChild(popupDiv))
 
 }
@@ -152,9 +170,12 @@ async function getCountryChart(listid, chartRange) {
 
 // --------------------------------------------------------------
 
+
 // fonction qui sert juste à englober la séquence d'éxécution 
 // chartList -> countryCharts -> ?
 async function mainFunction() {
+
+  // on récupère la liste des charts
   let countries = await getChartList();
 
   // // // test avec un seul pays
@@ -172,7 +193,7 @@ async function mainFunction() {
   //   console.log("pays : " + country.id + ", chanson : " + country.title + ", artiste : " + country.artist + ", liste d'images : " + country.images)
   // }
 
-
+  // fonction qui associe élément HTML (path SVG) et pays de la liste
   function setCountryElement(country) {
     // on crée la propriété HTMLelement qui fait le lien entre JS et le Document Object Model HTML
     country.HTMLelement = document.getElementById(country.id);
@@ -181,6 +202,7 @@ async function mainFunction() {
 
     // cree un élement popup
     let popup = document.createElement("div");
+    // on lui ajoute une classe
     popup.classList.add('popup-div');
 
     let popupDivImg = document.createElement("div")
@@ -212,29 +234,44 @@ async function mainFunction() {
 
     popupArtist.innerText = country.artist;
 
+
+    // SI y'a pas d'image, on charge une image 'placeholder', SINON on récupère l'image qui s'appelle 'coverart'
     if (country.images != undefined) {
       popupDivImg.setAttribute('style', `background-image: url(${country.images.coverart})`)
     } else {
       popupDivImg.setAttribute('style', `background-image: url(./Carte/retro-vinyl-record-icon-vector-illustration.jpg)`)
     }
 
+    // on ajoute tout les sous éléments dans le pop up
     popup.appendChild(popupDivImg)
     popup.appendChild(popupDivText)
     popupDivImg.appendChild(popupImg);
     popupDivText.appendChild(popupHeader)
     popupDivText.appendChild(popupTitle)
     popupDivText.appendChild(popupArtist)
+
+    // on crée une propriété qui associe le pays et sa pop up
     country.popup = popup;
   }
 
   function assignEvents(country) {
 
-
+    // quand la souris rentre dans un pays
     country.HTMLelement.onmouseenter = function () {
+
+      // on choppe la position X Y du pays grace au navigateur
       country.position = country.HTMLelement.getBoundingClientRect()
+
+      // on balance le pop up
       body.appendChild(country.popup)
+
+      // on donne une position au pop up grace à la position du pays
       country.popup.setAttribute('style', `top: ${parseInt(country.position.y)}px;left: ${parseInt(country.position.x)}px`)
+      
+      // on joue l'animation de survol
       hover(country.HTMLelement);
+
+      // on joue l'animation d'appartion du pop up
       display(country.popup)
     };
 
@@ -253,9 +290,11 @@ async function mainFunction() {
   setCountryElement(countries[3])
   assignEvents(countries[3])
 }
+// séquence d'éxécution
 loadSequence();
+mainFunction();
 
-// mainFunction();
+
 
 
 
