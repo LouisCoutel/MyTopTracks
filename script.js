@@ -21,6 +21,8 @@ function loadSequence() {
       update: function (anim) {
         loadOverlay.innerHTML = '<p style="display: block; margin: auto">loading... <br>' + Math.round(anim.progress) + '%</p>';
       }
+
+
     })
   }
 
