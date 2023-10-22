@@ -883,3 +883,25 @@ body {
   font-size: 54px;
   font-weight: 400;
 }
+
+
+.selectors-window {
+  display: flex;
+  flex-direction: column;
+  max-height: 300px;
+  position: absolute;
+  left: 0;
+  overflow-y: scroll;
+  z-index: 100;
+}
+
+#selectors-list {
+  padding: 8px;
+  width: 200px;
+}
+
+#selectors-list li {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
