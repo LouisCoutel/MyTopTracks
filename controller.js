@@ -11,31 +11,38 @@ export default class Controller {
     async fetchCharts() {
         await this.model.getCountriesCharts();
     }
-    render() {
-        this.view.buildCards(this.countries)
-        this.view.insertCards(this.countries)
+    async render(country) {
+        this.view.buildCards(country)
+        this.view.insertCards(country)
     }
     async setAvailable() {
         await this.fetchAvailable()
         this.countries = this.model.availableCountries.map(country => {
             country.display = false;
+            country.HTMLelement = document.getElementById(country.id)
             return country
         })
         await this.view.buildSelectors(this.countries)
         this.showAvailable()
     }
 
-    async setSelected() {
-        this.countries.forEach(async country => {
-            if (country.display == true) {
-                let chart = await this.model.getCountryChart(country)
-                console.log(chart)
-                country.track = chart[0].title
-                country.artist = chart[0].subtitle
-                country.images = chart[0].images
-            }
-        })
-        this.render()
+    setSelected(country) {
+        country.display = true;
+    }
+
+    async fetchSelected(country) {
+        let chart = await this.model.getCountryChart(country)
+        console.log(chart)
+        country.track = await chart[0].title
+        country.artist = await chart[0].subtitle
+        country.images = await chart[0].images
+    }
+
+    showSelected(country) {
+        country.HTMLelement.classList.toggle("land")
+        country.HTMLelement.classList.toggle("pays-actifs")
+        this.view.buildCard(country);
+        this.view.insertCard(country)
     }
     showAvailable() {
         this.view.insertSelectors(this.countries)

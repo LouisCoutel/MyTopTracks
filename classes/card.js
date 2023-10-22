@@ -1,12 +1,11 @@
 
 class Card {
     constructor(country) {
-        this.id = country.listid
+        this.id = country.id
         this.track = country.track
         this.artist = country.artist
         this.images = country.images
-        this.position = 
-
+        this.position = country.HTMLelement.getBoundingClientRect()
         this.chartCard = this.create("article");
         this.imgDiv = this.create("div")
 
@@ -24,20 +23,20 @@ class Card {
         this.chartCard.appendChild(this.imgDiv)
         this.chartCard.appendChild(this.infoSection)
         this.infoSection.appendChild(this.header)
-        this.infoSection.appendChild(this.titlePara)
+        this.infoSection.appendChild(this.trackPara)
         this.infoSection.appendChild(this.artistPara)
     }
     setValues() {
-        this.header.innerHTML = '#<b>1</b> in ' + this.name;
-        this.trackPara.innerText = this.title;
+        this.header.innerHTML = '#<b>1</b> in ' + this.id;
+        this.trackPara.innerText = this.track;
         this.artistPara.innerText = this.artist;
     }
     setAttributes() {
-        this.chartCard.id = this.listid
+        this.chartCard.id = this.id
         this.chartCard.setAttribute('style', `top: ${parseInt(this.position.y)}px; left: ${parseInt(this.position.x)}px;`)
         this.chartCard.classList.add('chart-card');
         this.imgDiv.classList.add('card-img-div');
-        this.titlePara.classList.add('card-title');
+        this.trackPara.classList.add('card-track');
         this.artistPara.classList.add('card-artist');
         this.infoSection.classList.add('card-info-section');
         this.header.classList.add('card-header');

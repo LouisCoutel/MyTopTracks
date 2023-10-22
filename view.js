@@ -6,14 +6,8 @@ class View {
         this.controller = controller
         this.selectorsList = document.getElementById("selectors-list")
     }
-    buildCards(countries) {
-
-        countries.forEach(country => {
-            if (country.display == true) {
-                console.log(country)
-                country.card = new Card(country.id, country.title, country.artist, country.images)
-            }
-        })
+    buildCard(country) {
+        country.card = new Card(country)
     }
 
     buildSelectors(countries) {
@@ -23,17 +17,17 @@ class View {
         })
     }
 
-    insertCards(countries) {
-        countries.forEach(country => {
-            country.HTMLElement.appendChild(country.card)
-        })
+    insertCard(country) {
+        console.log(country)
+        document.body.appendChild(country.card.chartCard)
     }
 
     selectEvents(countries) {
-        countries.forEach(country => {
-            country.selector.switch.onchange = () => {
-                country.display = true;
-                this.controller.setSelected();
+        countries.forEach(async country => {
+            country.selector.switch.onchange = async () => {
+                this.controller.setSelected(country);
+                await this.controller.fetchSelected(country);
+                this.controller.showSelected(country);
             }
         })
     }

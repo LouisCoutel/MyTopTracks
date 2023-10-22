@@ -42,9 +42,23 @@ html {
   -moz-tab-size: 4;
   /* 3 */
   -o-tab-size: 4;
-     tab-size: 4;
+  tab-size: 4;
   /* 3 */
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    'Noto Sans',
+    sans-serif,
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    'Noto Color Emoji';
   /* 4 */
   font-feature-settings: normal;
   /* 5 */
@@ -85,7 +99,7 @@ Add the correct text decoration in Chrome, Edge, and Safari.
 
 abbr:where([title]) {
   -webkit-text-decoration: underline dotted;
-          text-decoration: underline dotted;
+  text-decoration: underline dotted;
 }
 
 /*
@@ -129,7 +143,8 @@ code,
 kbd,
 samp,
 pre {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
   /* 1 */
   font-size: 1em;
   /* 2 */
@@ -366,7 +381,8 @@ textarea {
 2. Set the default placeholder color to the user's configured gray 400 color.
 */
 
-input::-moz-placeholder, textarea::-moz-placeholder {
+input::-moz-placeholder,
+textarea::-moz-placeholder {
   opacity: 1;
   /* 1 */
   color: #9ca3af;
@@ -386,7 +402,7 @@ Set the default cursor for buttons.
 */
 
 button,
-[role="button"] {
+[role='button'] {
   cursor: pointer;
 }
 
@@ -434,7 +450,9 @@ video {
   display: none;
 }
 
-*, ::before, ::after {
+*,
+::before,
+::after {
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
   --tw-translate-x: 0;
@@ -642,7 +660,7 @@ video {
 
 .object-contain {
   -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
 }
 
 .px-2 {
@@ -687,12 +705,15 @@ video {
 }
 
 .drop-shadow-md {
-  --tw-drop-shadow: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+  --tw-drop-shadow: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07))
+    drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale)
+    var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
 .filter {
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale)
+    var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
 /* stylelint-disable color-function-notation */
@@ -712,16 +733,12 @@ html {
 body {
   width: 100%;
   height: 100%;
-  font-family: "PP Neue Montreal", sans-serif;
+  font-family: 'PP Neue Montreal', sans-serif;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: radial-gradient(
-    50% 50% at 50% 50%,
-    #2bc1e2 0%,
-    rgba(43, 193, 226, 0.64) 100%
-  );
+  background: radial-gradient(50% 50% at 50% 50%, #2bc1e2 0%, rgba(43, 193, 226, 0.64) 100%);
 }
 
 .conseilnav-p {
@@ -784,7 +801,7 @@ body {
 .ada-logo {
   width: 50px;
   -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
   position: relative;
   left: 4px;
   top: 2px;
@@ -797,28 +814,35 @@ body {
 
 /* Auto layout */
 
-.popup-div {
-  display: flex;
-  flex-direction: row;
+.chart-card {
   align-items: flex-start;
   padding: 8px;
   gap: 8px;
-  position: absolute;
-  width: -moz-fit-content;
+  display: flex;
   width: fit-content;
   pointer-events: none;
+  opacity: 0;
   background: rgba(255, 255, 255, 0.5);
   border-bottom: 2px solid #000;
-  box-shadow: 0 -1px 10px 10px rgba(0, 0, 0, 0.1),
+  box-shadow:
+    0 -1px 10px 10px rgba(0, 0, 0, 0.1),
     0 10px 8px rgba(0, 0, 0, 0.25);
-  -webkit-backdrop-filter: blur(4px);
-          backdrop-filter: blur(4px);
-  /* Note: backdrop-filter has minimal browser support */
+  backdrop-filter: blur(4px);
   border-radius: 5px;
   z-index: 3;
+  transform: translateY(100%);
+  transition: all;
+  transition-duration: 500ms;
+  transition-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.045);
 }
 
-.popup-div-img {
+.pays-actifs:hover > .chart-card {
+  transition-duration: 700ms;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card-img-div {
   /* Auto layout */
   overflow: clip;
   display: flex;
@@ -829,7 +853,8 @@ body {
   min-height: 36px;
   background-size: contain;
   border: 1px solid #000;
-  box-shadow: inset -2px -2px 2px 1px rgba(0, 0, 0, 0.15),
+  box-shadow:
+    inset -2px -2px 2px 1px rgba(0, 0, 0, 0.15),
     inset 2px 2px 2px 1px rgba(0, 0, 0, 0.15);
   border-radius: 5px;
 }
@@ -838,7 +863,7 @@ body {
 
 /* Auto layout */
 
-.popup-div-text {
+.card-info-section {
   display: flex;
   flex-direction: column;
   height: -moz-fit-content;
@@ -851,7 +876,7 @@ body {
   color: #313131;
 }
 
-.popup-header {
+.card-header {
   font-size: 14px;
   flex-grow: 0;
   font-weight: 400;
@@ -859,19 +884,19 @@ body {
 
 /* identical to box height */
 
-.popup-title {
+.card-track {
   flex-grow: 0;
   font-weight: 700;
 }
 
-.popup-artist {
+.card-artist {
   display: inline;
 }
 
 #load-overlay {
   display: flex;
   -webkit-backdrop-filter: blur(2px);
-          backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
   z-index: 3;
   background: #fefefa;
   width: 100vw;
@@ -883,7 +908,6 @@ body {
   font-size: 54px;
   font-weight: 400;
 }
-
 
 .selectors-window {
   display: flex;
