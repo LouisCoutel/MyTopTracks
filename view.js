@@ -19,7 +19,13 @@ class View {
 
     insertCard(country) {
         console.log(country)
-        document.body.appendChild(country.card.chartCard)
+       document.body.appendChild(country.card.chartCard)
+        country.HTMLelement.onmouseover = () => {
+            country.card.chartCard.classList.toggle("displayed")
+        }
+        country.HTMLelement.onmouseleave = () => {
+            country.card.chartCard.classList.toggle("displayed")
+        }
     }
 
     selectEvents(countries) {
@@ -29,6 +35,7 @@ class View {
                 await this.controller.fetchSelected(country);
                 this.controller.showSelected(country);
             }
+
         })
     }
     insertSelectors(countries) {

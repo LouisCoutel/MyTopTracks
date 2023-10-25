@@ -1,15 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-
+ 
 
 * {
   margin: 0;
   padding: 0;
 }
 
-html {
-  width: 100vw;
-  height: 100vh;
-}
+
 
 body {
   width: 100%;
@@ -20,10 +20,9 @@ body {
   justify-content: center;
   align-items: center;
   background: radial-gradient(50% 50% at 50% 50%, #2bc1e2 0%, rgba(43, 193, 226, 0.64) 100%);
-}
+} */
 
 .conseilnav-p {
-  /* Explore the map with your cursor */
   font-weight: 100;
   font-size: calc(1em + 0.8vw);
   letter-spacing: 0.03em;
@@ -57,9 +56,9 @@ body {
   flex-shrink: 1;
 }
 
-/* .pays-actifs:hover {
+.pays-actifs:hover {
   fill: #ffe500;
-} */
+}
 
 .land {
   fill: #edeae0;
@@ -71,18 +70,12 @@ body {
   position: absolute;
   bottom: 16px;
   left: 16px;
+  width: -moz-max-content;
   width: max-content;
   font-weight: 100;
   font-size: 12px;
   line-height: 150%;
   color: #292929;
-}
-
-#selectors-list {
-  display: flex;
-  position:fixed;
-  top: 50%;
-  left: 50%;
 }
 
 .ada-logo {
@@ -96,20 +89,44 @@ body {
   z-index: 1;
 }
 
-/* card */
+/* PopUp */
 
 /* Auto layout */
 
+.chart-card {
+  align-items: flex-start;
+  padding: 8px;
+  gap: 8px;
+  display: flex;
+  width: fit-content;
+  pointer-events: none;
+  opacity: 0;
+  background: rgba(255, 255, 255, 0.5);
+  border-bottom: 2px solid #000;
+  box-shadow:
+    0 -1px 10px 10px rgba(0, 0, 0, 0.1),
+    0 10px 8px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(4px);
+  border-radius: 5px;
+  position: absolute;
+  z-index: 100;
+  transform: translateY(100%);
+  transition: all;
+  transition-duration: 500ms;
+  transition-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
 
-.pays-actifs:hover > .chart-card {
+.chart-card.displayed {
   transition-duration: 700ms;
   opacity: 1;
   transform: translateY(0);
 }
 
 .card-img-div {
-  overflow: hidden;
+  /* Auto layout */
+  overflow: clip;
   display: flex;
+  flex-direction: row;
   width: 72px;
   height: 72px;
   min-width: 36px;
@@ -122,9 +139,14 @@ body {
   border-radius: 5px;
 }
 
+/* Frame 4 */
+
+/* Auto layout */
+
 .card-info-section {
   display: flex;
   flex-direction: column;
+  height: -moz-fit-content;
   height: fit-content;
   margin: auto 0 0;
   justify-self: flex-end;
@@ -142,7 +164,7 @@ body {
 
 /* identical to box height */
 
-.card-title {
+.card-track {
   flex-grow: 0;
   font-weight: 700;
 }
@@ -151,17 +173,23 @@ body {
   display: inline;
 }
 
-#load-overlay {
+.selectors-window {
   display: flex;
-  backdrop-filter: blur(2px);
-  z-index: 3;
-  background: #fefefa;
-  width: 100vw;
-  height: 100vh;
+  flex-direction: column;
+  max-height: 300px;
   position: fixed;
-  top: 0;
-  left: 0;
-  justify-content: center;
-  font-size: 54px;
-  font-weight: 400;
+  left: 2%;
+  overflow-y: scroll;
+  z-index: 100;
+}
+
+#selectors-list {
+  padding: 8px;
+  width: 200px;
+}
+
+#selectors-list li {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 }
