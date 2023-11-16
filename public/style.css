@@ -104,8 +104,6 @@ html {
   gap: 8px;
   display: flex;
   width: fit-content;
-  pointer-events: none;
-  opacity: 0;
   background: rgba(255, 255, 255, 0.5);
   border-bottom: 2px solid #000;
   box-shadow:
@@ -113,18 +111,30 @@ html {
     0 10px 8px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(4px);
   border-radius: 5px;
-  position: absolute;
-  z-index: 100;
-  transform: translateY(100%);
-  transition: all;
-  transition-duration: 500ms;
-  transition-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.045);
 }
 
-.chart-card.displayed {
-  transition-duration: 700ms;
+.card-list {
+  display: flex; 
+  width: fit-content;
+  flex-direction: column; 
+  position: absolute; 
+  pointer-events:none; 
+  gap: 80px;
+  position: absolute;
+  z-index: 100;
+  opacity: 0;
+  transition: all;
+  transform: translateY(90vh);
+  transition-duration: 600ms;
+  transition-timing-function: ease-in;
+}
+
+.card-list.displayed {
+  transition-duration: 600ms;
   opacity: 1;
   transform: translateY(0);
+  gap: 8px;
+  transition-timing-function: ease-out;
 }
 
 .card-img-div {

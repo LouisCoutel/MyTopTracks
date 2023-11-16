@@ -1,4 +1,4 @@
-import Controller from "./controller"
+import VM from "./VM"
 import Model from "./model"
 import View from "./view"
 class SingletonFactory {
@@ -9,7 +9,7 @@ class SingletonFactory {
         this.app
     }
     #createCtrl() {
-        this.ctrl = new Controller(this.view, this.model)
+        this.ctrl = new VM(this.view, this.model)
         this.ctrl.constructor = () => { return this.ctrl }
     }
     getCtrl() {
@@ -42,10 +42,10 @@ class SingletonFactory {
         this.app = {
             model: this.getModel(),
             view: this.getView(),
-            controller: this.getCtrl()
+            VM: this.getCtrl()
         }
-        this.app.view.setController(this.app.controller)
-        this.app.model.setController(this.app.controller)
+        this.app.view.setVM(this.app.VM)
+        this.app.model.setVM(this.app.VM)
         this.app.constructor = () => { return this.app }
     }
     getApp() {

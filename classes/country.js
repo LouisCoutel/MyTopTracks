@@ -1,15 +1,33 @@
+import CardList from "./cardList"
+
 class Country {
-  constructor(listid, title, subtitle, images) {
-    this.id = listid
-    this.chart = { title: title, artist: subtitle, images: images }
-    // on crée la propriété element qui fait le lien entre JS et le Document Object Model HTML
-    this.element = document.getElementById(this.id);
-    this.element.position = this.element.getBoundingClientRect()
+  constructor(code) {
+    this.id = code
+    // this.continent = this.findContinent(code)
+    this.itemIds = []
+    this.svgElement = document.getElementById(code)
+    this.position = this.svgElement.getBoundingClientRect()
+    this.cardList = new CardList(code)
     this.toggleClass()
+    this.setEvents()
   }
   toggleClass() {
-    this.element.classList.toggle('land');
-    this.element.classList.toggle('pays-actifs');
+    this.svgElement.classList.toggle('land');
+    this.svgElement.classList.toggle('pays-actifs');
+  }
+  appendCard(card) {
+    this.cardList.appendCard(card)
+  }
+
+  setEvents() {
+    this.svgElement.onmouseenter = () => {
+      console.log("on")
+      this.cardList.toggle()
+    }
+    this.svgElement.onmouseleave = () => {
+      console.log("off")
+      this.cardList.toggle()
+    }
   }
 }
 
