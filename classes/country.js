@@ -1,4 +1,4 @@
-import CardList from "./cardList"
+import CardList from "../components/cardList"
 
 class Country {
   constructor(code) {

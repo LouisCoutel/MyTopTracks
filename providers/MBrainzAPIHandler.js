@@ -15,13 +15,11 @@ class MBrainzAPIHandler {
         if (res.ok) {
             const data = await res.json()
             const result = data.artists[0]
-            console.log(result)
-            if (result) {
-                return {
-                    name: result.area ? result.area.name : "France", code: result.country ? result.country : "FR"
-                }
+            console.log("result " + result)
+            if (result != undefined && result.area) {
+                return result
             } else {
-                return { name: "France", code: "FR" }
+                return { area: { name: "France" }, country: 'FR' }
             }
         }
     }

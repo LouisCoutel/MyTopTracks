@@ -1,4 +1,4 @@
-import Card from "./card.js"
+import Card from "../components/card"
 
 class Item {
     constructor(item, index) {

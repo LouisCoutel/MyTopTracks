@@ -167,7 +167,7 @@ html {
 }
 
 .card-header {
-  font-size: 14px;
+  font-size: 16px;
   flex-grow: 0;
   font-weight: 400;
 }
@@ -176,11 +176,12 @@ html {
 
 .card-track {
   flex-grow: 0;
+  font-size: 16px;
   font-weight: 700;
 }
 
 .card-artist {
-  display: inline;
+  font-size: 14px;
 }
 
 .selectors-window {
