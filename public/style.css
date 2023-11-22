@@ -34,6 +34,11 @@ html {
   right: 8px;
 }
 
+#chartdiv {
+  width: 100vw;
+  height: 100%;
+}
+
 #heading {
   position: absolute;
   top: 5%;

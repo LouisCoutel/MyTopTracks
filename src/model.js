@@ -5,6 +5,8 @@ import countriesAndContinents from '../data/csc.json' assert { type: 'json' }
 class Model {
   #continents = [{ name: 'Africa' }, { name: 'Asia' }, { name: 'Europe' }, { name: 'Australia' }, { name: 'North America' }, { name: 'South America' }]
   constructor() {
+    // this.countriesData = am5geodata_data_countries
+    // this.countriesData2 = am5geodata_data_countries2
     this.deezer = deezerHandler
     this.mBrainz = mBrainzHandler
     this.countriesAndContinents = countriesAndContinents
