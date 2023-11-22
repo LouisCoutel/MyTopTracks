@@ -7,7 +7,7 @@ class Country {
     this.itemIds = []
     this.svgElement = document.getElementById(code)
     this.position = this.svgElement.getBoundingClientRect()
-    this.cardList = new CardList(code)
+    this.cardList = new CardList(this)
     this.toggleClass()
     this.setEvents()
   }
@@ -20,12 +20,17 @@ class Country {
   }
 
   setEvents() {
-    this.svgElement.onmouseenter = () => {
-      console.log("on")
+    this.svgElement.onmouseenter = (e) => {
       this.cardList.toggle()
+      console.log(e.clientX)
+      console.log(window.innerWidth)
+      if (e.clientX < (window.innerWidth - 250)) {
+        this.cardList.setPos(e.clientX + 40)
+      } else {
+        this.cardList.setPos(e.clientX - 100)
+      }
     }
     this.svgElement.onmouseleave = () => {
-      console.log("off")
       this.cardList.toggle()
     }
   }

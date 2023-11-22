@@ -31,18 +31,35 @@ class Model {
 
 
       if (await trackData.country != undefined) {
-        track.country = { name: trackData.area.name, code: trackData.country, city: "" }
-      } else if (await trackData.area.type == "City") {
-        const country = this.countriesAndContinents.find(country => country.cities.includes(trackData.area.name))
-        track.country = { name: country.name, code: country.code, city: trackData.area.name }
+        track.country = { name: trackData.area.name, code: trackData.country, location: "" }
+      } else if (await trackData.area.type) {
+        track.country = this.findCountry(trackData)
       } else {
-        track.country = { name: "France", code: "FR", city: "" }
+        track.country = { name: "France", code: "FR", location: "" }
       }
 
       console.log(await track.country)
       await this.VM.setItem(track, this.tracks.indexOf(track))
     }
   }
+
+  findCountry(trackData) {
+    let country = this.countriesAndContinents.find(country => country.cities.includes(trackData.area.name))
+
+    if (country) {
+      return { name: country.name, code: country.code, location: trackData.area.name }
+    } else if (trackData.disambiguation.includes("US")) {
+      return { name: "United States", code: "US", location: trackData.area.name }
+    } else if (trackData.disambiguation.includes("UK")) {
+      return { name: "United Kingdom", code: "UK", location: trackData.area.name }
+    } else {
+      country = this.countriesAndContinents.find(country => country.states.includes(trackData.area.name))
+      if (country) {
+        return { name: country.name, code: country.code, location: trackData.area.name }
+      }
+    }
+  }
+
 
   getContinent(id) {
     return this.countriesAndContinents[id].continent
