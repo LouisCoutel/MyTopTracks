@@ -1,6 +1,7 @@
 import VM from "./VM"
 import Model from "./model"
 import View from "./view"
+
 class SingletonFactory {
     constructor() {
         this.ctrl
@@ -19,7 +20,7 @@ class SingletonFactory {
         } else { return this.ctrl }
     }
     #createView() {
-        this.view = new View
+        this.view = new View()
         this.view.constructor = () => { return this.view }
     }
     getView() {

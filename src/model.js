@@ -29,8 +29,6 @@ class Model {
       }
       await timeout()
       const trackData = await this.mBrainz.searchArtist(track)
-      console.log(await trackData)
-
 
       if (await trackData.country != undefined) {
         track.country = { name: trackData.area.name, code: trackData.country, location: "" }
@@ -40,7 +38,6 @@ class Model {
         track.country = { name: "France", code: "FR", location: "" }
       }
 
-      console.log(await track.country)
       await this.VM.setItem(track, this.tracks.indexOf(track))
     }
   }

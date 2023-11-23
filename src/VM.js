@@ -1,12 +1,15 @@
+import { indexOf } from "@amcharts/amcharts5/.internal/core/util/Array.js"
 import Country from "../classes/country"
 import Item from "../classes/item"
+import * as amMap from "./map.js"
+import * as am5 from "@amcharts/amcharts5";
+
 export default class VM {
-    countries = []
-    #continents
-    items = []
     constructor(view, model) {
         this.view = view
         this.model = model
+        this.countries = []
+        this.items = []
     }
 
 
@@ -21,23 +24,24 @@ export default class VM {
     }
 
     setCountry(item) {
-        const code = item.countryId
-        console.log(item.countryId)
 
-        if (!this.checkCountry(code)) {
-            console.log(this.checkCountry(code))
-            this.countries.push(new Country(code)
-            )
+        if (this.countries == undefined || !this.countries.some(country => country.id == item.countryId)) {
+            this.countries.push({
+                id: item.countryId, enabledSettings: {
+                    fill: am5.color(0xfefefa),
+                    stroke: am5.color(0xe1e1e1),
+                    interactive: true,
+                    tooltipText: `${item.title}`,
+                    items: [item]
+                }
+            })
+        } else {
+            const currentCountry = this.countries.find(country => country.id == item.countryId)
+            currentCountry.enabledSettings.items.push(item)
         }
-
-        const currentCountry = this.countries.find(country => country.id == code)
-        this.linkItemToCountry(currentCountry, item)
-        if (currentCountry.itemIds.length <= 5) { this.view.render(currentCountry, item) }
+        this.view.render(this.countries)
     }
 
-    linkItemToCountry(country, item) {
-        country.itemIds.push(item.id)
-    }
 
     checkCountry(code) {
         return this.countries.some(country => country.id == code)
