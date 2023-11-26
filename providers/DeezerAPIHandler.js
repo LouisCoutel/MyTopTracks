@@ -1,5 +1,4 @@
 
-//déclaration de fonction pour chopper la liste avec les listId
 class DeezerAPIHandler {
   constructor() {
     this.options = {

@@ -1,4 +1,3 @@
-
 class MBrainzAPIHandler {
     constructor() {
         this.options = {
