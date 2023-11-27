@@ -1,15 +1,15 @@
 import { indexOf } from "@amcharts/amcharts5/.internal/core/util/Array.js"
 import Country from "../classes/country"
 import Item from "../classes/item"
-import * as amMap from "./map.js"
 import * as am5 from "@amcharts/amcharts5";
 
 export default class VM {
+    tracks
     constructor(view, model) {
         this.view = view
         this.model = model
-        this.countries = []
-        this.items = []
+        this.activeCountries = []
+        this.tracks = []
     }
 
 
@@ -17,29 +17,39 @@ export default class VM {
         this.model.setDeezerToken(token)
     }
 
-    setItem(item, index) {
-        const newItem = new Item(item, index)
-        this.items.splice(index, 1, newItem)
-        this.setCountry(newItem)
+    pickRandomEntry(arr) {
+        return Math.round(Math.random() * (arr.length - 1))
     }
 
-    setCountry(item) {
+    async setActiveCountries(filter) {
 
-        if (this.countries == undefined || !this.countries.some(country => country.id == item.countryId)) {
-            this.countries.push({
-                id: item.countryId, enabledSettings: {
-                    fill: am5.color(0xfefefa),
-                    stroke: am5.color(0xe1e1e1),
-                    interactive: true,
-                    tooltipText: `${item.title}`,
-                    items: [item]
-                }
-            })
+        if (filter) {
+            this.activeCountries = this.model.filter(country => filter.includes(country.id))
         } else {
-            const currentCountry = this.countries.find(country => country.id == item.countryId)
-            currentCountry.enabledSettings.items.push(item)
+            this.activeCountries = this.model.availableCountries
         }
-        this.view.render(this.countries)
+    }
+
+    async setRandomTracksByCountry(numberOfTracks) {
+        this.activeCountries = this.activeCountries.map(country => {
+            const allTracks = this.model.tracks.filter(track => track.country_id == country.id)
+            const randomTracks = []
+            for (let i = 0; i < numberOfTracks; i++) {
+                const rand = this.pickRandomEntry(allTracks)
+                if (allTracks[rand] && (randomTracks.includes(allTracks[rand]) == false)) {
+                    randomTracks.push(allTracks[rand])
+                }
+            }
+            country.tracks = randomTracks
+            this.tracks.push(randomTracks)
+            return country
+        })
+
+    }
+
+    async setCountryAmChartsSetting() {
+        this.view.render(this.activeCountries)
+        console.log(this.activeCountries)
     }
 
 
