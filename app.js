@@ -1,4 +1,5 @@
 import SingletonFactory from "./src/factory.js"
+import loader from './components/loader'
 
 const factory = new SingletonFactory
 
@@ -14,11 +15,10 @@ const app = factory.getApp()
 
 // if (token) {
 // }
-
 await app.model.getAllTracks()
 await app.model.getCountries()
 await app.VM.setActiveCountries()
-await app.VM.setRandomTracksByCountry(5)
+await app.VM.setRandomTracksByCountry(1)
 await app.VM.setCountryAmChartsSetting()
 
 
