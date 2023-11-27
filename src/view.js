@@ -36,7 +36,7 @@ class View {
                 panX: "translateX",
                 panY: "translateY",
                 minZoomLevel: 0.9,
-                maxZoomLevel: 3,
+                maxZoomLevel: 5,
                 zoomLevel: 0.9,
                 rotationX: -10,
                 wheelSensitivity: 0.7,

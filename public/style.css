@@ -23,16 +23,17 @@ html {
 
 .conseilnav-p {
   border-radius: 7px;
-  border: 1px solid #e24d2c;
-  bottom: 4px;
+  border: 0.5px solid #e24d2c;
+  bottom: 8px;
   color: #e24d2c;
   font-size: 16px;
   font-weight: 100;
   letter-spacing: 0.03em;
   padding: 4px 8px;
   position: fixed;
-  right: 4px;
-  width: 40ch;
+  right: 8px;
+  width: 35ch;
+  display: none;
 }
 
 #loader {
@@ -99,9 +100,9 @@ html {
 }
 
 .credits-p {
-  bottom: 4px;
+  bottom: 2px;
   color: #292929;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 100;
   left: 64px;
   line-height: 12px;
@@ -109,6 +110,9 @@ html {
   width: max-content;
 }
 
+b.font-medium {
+  font-weight: 500
+}
 
 .card-list {
   display: flex; 
@@ -124,7 +128,7 @@ html {
   backdrop-filter: blur(4px);
   background: rgba(255, 255, 255, 0.5);
   border-bottom: 2px solid #000;
-  border-radius: 5px;
+  border-radius: 7px;
   box-shadow:
     0 -1px 10px 4px rgba(0, 0, 0, 0.1),
     0 10px 8px rgba(0, 0, 0, 0.25);
@@ -153,11 +157,10 @@ html {
 .card-info-section {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
 }
 
 .card-album, .card-artist, .card-track {
-  display: block;
   color: #313131;
   width: 180px;
   flex-grow: 0;
@@ -165,16 +168,48 @@ html {
   white-space: nowrap;
   overflow: hidden;
   font-size: 12px;
-  line-height: 15px;
 }
 
 .card-track {
   font-weight: 700;
-  font-size: 13px;
+  font-size: 16px
 }
 
 .card-artist {
   font-weight: 500;
+  font-size: 13px
 }
 
+@media  screen and (min-width: 600px) {
+  .conseilnav-p {
+    display: inline;
+  }
+}
 
+@media screen and (min-width: 800px){
+  .chart-card{
+    max-width: 300px;
+    padding: 8px;
+    gap: 8px;
+  }
+  .card-img-div {
+    width: 64px;
+    height: 64px
+  }
+  .card-album, .card-artist, .card-track {
+    width: 230px;
+    font-size: 16px;
+  }
+  
+  .card-track {
+    font-size: 20px
+  }
+  .card-artist {
+    font-size: 18px
+  }
+  .conseilnav-p {
+    width: 40ch;
+    font-size: 18px;
+  }
+
+}
