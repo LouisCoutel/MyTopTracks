@@ -24,15 +24,15 @@ html {
 .conseilnav-p {
   border-radius: 7px;
   border: 1px solid #e24d2c;
-  bottom: 16px;
+  bottom: 4px;
   color: #e24d2c;
   font-size: 16px;
   font-weight: 100;
   letter-spacing: 0.03em;
   padding: 4px 8px;
   position: fixed;
-  right: 16px;
-  width: 50ch;
+  right: 4px;
+  width: 40ch;
 }
 
 #loader {
@@ -43,7 +43,6 @@ html {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgb(154, 154, 154);
   justify-content: center;
   align-items: center;
   display: none;
@@ -71,7 +70,7 @@ html {
     position: absolute;
     inset: 0px;
     border-radius: 50%;
-    border: 5px solid #FFF;
+    border: 5px solid #e24d2c;
     animation: prixClipFix 3s ease-out infinite ;
 }
 
@@ -93,31 +92,23 @@ html {
 }
 
 #heading {
-  left: 3%;
-  max-width: 90vw;
-  position: absolute;
-  top: 3%;
+  left: 3vw;
+  max-width: 60vw;
+  position: fixed;
+  top: 3vh;
 }
 
 .credits-p {
-  bottom: 28px;
+  bottom: 4px;
   color: #292929;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 100;
-  left: 4px;
-  line-height: 14px;
+  left: 64px;
+  line-height: 12px;
   position: fixed;
   width: max-content;
 }
 
-.ada-logo {
-  flex-grow: 0;
-  left: 2px;
-  object-fit: contain;
-  position: relative;
-  top: 1px;
-  width: 50px;
-}
 
 .card-list {
   display: flex; 
