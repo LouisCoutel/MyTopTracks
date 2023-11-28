@@ -9,8 +9,6 @@ class Loader {
         this.spinner.setAttribute("class", "spinner")
 
         this.loaderElement.appendChild(this.spinner)
-
-
     }
     insertSelf() {
         document.body.appendChild(this.loaderElement)
