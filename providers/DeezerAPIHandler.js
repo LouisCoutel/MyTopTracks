@@ -11,8 +11,8 @@ class DeezerAPIHandler {
     }
   }
 
-  async getTopTracks() {
-    const url = `https://corsproxy.io/?https://api.deezer.com/user/547723/charts?limit=50`
+  async search(query) {
+    const url = `https://corsproxy.io/?https://api.deezer.com/search?q=${query}`
     const res = await fetch(url, this.options);
     if (res.ok) {
       const data = await res.json()

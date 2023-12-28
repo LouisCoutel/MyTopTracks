@@ -4,7 +4,7 @@ import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 import am5themes_Responsive from "@amcharts/amcharts5/themes/Responsive";
 
 class AmMap {
-    constructor(root) {
+    constructor() {
         this.root = am5.Root.new("chartdiv")
     }
 
@@ -21,15 +21,13 @@ class AmMap {
 
         const geoCountries = await this.getGeoCountries()
         this.countriesSeries = await this.buildCountriesSeries(geoCountries)
+        this.setSearchModal()
         this.buildTooltip()
         this.countriesSeries.set("tooltip", this.tooltip)
         this.setOutlineSeries()
         this.countriesSeries.mapPolygons.template.states.create("hover", {
             fill: am5.color(0xffe500)
         })
-
-
-
     }
 
 
@@ -62,7 +60,6 @@ class AmMap {
                 geoJSON: geoData,
             })
         )
-
     }
 
     setOutlineSeries() {
@@ -90,10 +87,35 @@ class AmMap {
         )
     }
 
+    setSearchModal() {
+        const countryModal = am5.Modal.new(this.root, {
+            content: `<h3>Suggest me a track!</h3>
+            <p>Search for tracks using Deezer's API</p>
+            <form>
+            <label for="query">Keywords:</label>
+            <input type="field" id="query" name="query" placeholder="Enter any keyword"/>
+            <input type="submit" value="Search"/>
+            </form>
+        `})
+
+        function handleCountryClick() {
+            const cancelButton = document.createElement("input")
+            cancelButton.type = "button"
+            cancelButton.value = "cancel"
+            cancelButton.onclick = () => {
+                countryModal.cancel()
+            }
+            countryModal.getPrivate("content").appendChild(cancelButton)
+            countryModal.open();
+        }
+        this.countriesSeries.mapPolygons.template.events.on("click", handleCountryClick)
+    }
+
     setCountriesData(data) {
         this.countriesSeries.mapPolygons.template.setAll({ templateField: "enabledSettings" })
         this.countriesSeries.data.setAll(data)
     }
+
 
 
     buildTooltip() {
