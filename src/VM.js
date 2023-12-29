@@ -2,16 +2,18 @@ import { indexOf } from "@amcharts/amcharts5/.internal/core/util/Array.js"
 import Country from "../classes/country"
 import Item from "../classes/item"
 import * as am5 from "@amcharts/amcharts5";
-
+import { createState, createEffect } from "../classes/state"
+import CountryAmData from "../classes/country";
 export default class VM {
-    tracks
     constructor(view, model) {
         this.view = view
         this.model = model
-        this.activeCountries = []
-        this.tracks = []
+        this.countries = createState([])
+        this.tracks = createState([])
+        createEffect(() => {
+            console.log("countries", this.countries)
+        })
     }
-
 
     setUrl(token) {
         this.model.setDeezerToken(token)
@@ -21,19 +23,27 @@ export default class VM {
         return Math.round(Math.random() * (arr.length - 1))
     }
 
-    async setActiveCountries(filter) {
+    async setActiveCountries() {
+        const unfilteredCountries = this.model.tracks.map(track => {
+            if (track.country_id) { return { id: track.country_id } }
+        })
 
-        if (filter) {
-            this.activeCountries = this.model.filter(country => filter.includes(country.id))
-        } else {
-            this.activeCountries = this.model.availableCountries
-        }
+        const filteredCountries = unfilteredCountries.filter((country, index, self) =>
+            index === self.findIndex((t) => (
+                t.id === country.id
+            ))
+        )
+
+        filteredCountries.forEach((country, index) => {
+            this.countries[index] = createState(country)
+        })
     }
 
     async setRandomTracksByCountry(numberOfTracks) {
-        this.activeCountries = this.activeCountries.map(country => {
+        this.countries.forEach(country => {
             const allTracks = this.model.tracks.filter(track => track.country_id == country.id)
             const randomTracks = []
+
             for (let i = 0; i < numberOfTracks; i++) {
                 const rand = this.pickRandomEntry(allTracks)
                 if (allTracks[rand] && (randomTracks.includes(allTracks[rand]) == false)) {
@@ -41,16 +51,17 @@ export default class VM {
                 }
             }
             country.tracks = randomTracks
-            this.tracks.push(randomTracks)
-            return country
         })
-
+        createEffect(() => {
+            this.view.render(this.countries)
+        })
     }
 
-    async setCountryAmChartsSetting() {
-        this.view.render(this.activeCountries)
-        console.log(this.activeCountries)
-    }
+
+    // async setCountryAmChartsSetting() {
+    //     this.view.render(this.activeCountries)
+    //     console.log(this.activeCountries)
+    // }
 
 
     checkCountry(code) {

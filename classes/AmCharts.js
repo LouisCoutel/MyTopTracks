@@ -87,36 +87,42 @@ class AmMap {
         )
     }
 
+    addModalCancel() {
+        const cancelButton = document.createElement("input")
+        cancelButton.type = "button"
+        cancelButton.value = "cancel"
+        cancelButton.onclick = () => {
+            this.amMap.countryModal.cancel()
+        }
+        this.countryModal.getPrivate("content").appendChild(cancelButton)
+    }
+
     setSearchModal() {
-        const countryModal = am5.Modal.new(this.root, {
+        this.countryModal = am5.Modal.new(this.root, {
             content: `<h3>Suggest me a track!</h3>
             <p>Search for tracks using Deezer's API</p>
-            <form>
-            <label for="query">Keywords:</label>
-            <input type="field" id="query" name="query" placeholder="Enter any keyword"/>
-            <input type="submit" value="Search"/>
+            <form action>
+            <label for="query-field">Keywords:</label>
+            <input type="field" id="query-field" name="query-field" placeholder="Enter any keyword"/>
+            <button type="button" aria-label="launch search" id="search-button">search</button>
             </form>
         `})
-
-        function handleCountryClick() {
-            const cancelButton = document.createElement("input")
-            cancelButton.type = "button"
-            cancelButton.value = "cancel"
-            cancelButton.onclick = () => {
-                countryModal.cancel()
-            }
-            countryModal.getPrivate("content").appendChild(cancelButton)
-            countryModal.open();
-        }
-        this.countriesSeries.mapPolygons.template.events.on("click", handleCountryClick)
+        this.addModalCancel()
+        this.countriesSeries.mapPolygons.template.events.on("click", this.handleCountryClick)
     }
+
+    handleCountryClick() {
+        this.amMap.countryModal.open();
+        const queryField = this.amMap.countryModal.getPrivate("content").getElementById("query-field")
+        const searchButton = this.amMap.countryModal.getPrivate("content").getElementById("search-button")
+        searchButton.onclick = () => { this.VM.search(queryField.value) }
+    }
+
 
     setCountriesData(data) {
         this.countriesSeries.mapPolygons.template.setAll({ templateField: "enabledSettings" })
         this.countriesSeries.data.setAll(data)
     }
-
-
 
     buildTooltip() {
         this.tooltip = am5.Tooltip.new(this.root, {

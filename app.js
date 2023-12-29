@@ -18,10 +18,8 @@ const app = factory.getApp();
 
 (async () => {
     await app.model.getAllTracks()
-    await app.model.getCountries()
     await app.VM.setActiveCountries()
     await app.VM.setRandomTracksByCountry(1)
-    await app.VM.setCountryAmChartsSetting()
 })();
 
 
