@@ -43,8 +43,8 @@ export default class VM {
         this.mapState.createEffect(() => {
             const amData = []
             this.countries.forEach((country) => {
-                const tracks = this.trackSelection(this.numberSelection, country)
-                amData.push(new CountryAmData({ id: country, tracks: tracks }))
+                const tracks = this.trackSelection(this.numberSelection, country.id)
+                amData.push(new CountryAmData({ id: country.id, tracks: tracks }))
             })
             this.view.renderMap(amData)
         })
