@@ -118,7 +118,10 @@ class AmMap {
         const queryField = document.getElementById("query-field")
         searchButton.onclick = async () => {
             const results = await deezerHandler.search(queryField.value)
-            console.log(results)
+            const resultItems = results.map(result => `<p>${result.title} - ${result.artist.name}</p><hr/>`)
+            const resultsDiv = document.createElement("div")
+            resultsDiv.innerHTML = resultItems.join("")
+            this.countryModal.getPrivate("content").appendChild(resultsDiv)
         }
     }
 
