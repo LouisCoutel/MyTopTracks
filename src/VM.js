@@ -14,6 +14,8 @@ export default class VM {
         this.numberSelection = 1
         this.mapState = new State({ countries: [] })
         this.countries = this.mapState.state.countries
+        this.searchState = new State({ results: [] })
+        this.searchResults = this.searchState.state.results
     }
 
     setUrl(token) {
@@ -37,8 +39,6 @@ export default class VM {
                     t.id === country.id
                 ))
             )
-
-
         }
         this.mapState.createEffect(() => {
             const amData = []

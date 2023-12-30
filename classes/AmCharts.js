@@ -2,14 +2,13 @@ import * as am5 from "@amcharts/amcharts5";
 import * as am5map from "@amcharts/amcharts5/map";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 import am5themes_Responsive from "@amcharts/amcharts5/themes/Responsive";
-import deezerHandler from "../providers/DeezerAPIHandler";
 
 class AmMap {
     constructor() {
         this.root = am5.Root.new("chartdiv")
     }
 
-    async buildSequence() {
+    async buildSequence(handlers) {
         this.root.setThemes([
             am5themes_Animated.new(this.root),
             am5themes_Responsive.new(this.root)
@@ -101,28 +100,22 @@ class AmMap {
     setSearchModal() {
         this.countryModal = am5.Modal.new(this.root, {
             content: `<h3>Suggest me a track!</h3>
-            <p>Search for tracks using Deezer's API</p>
-            <form action>
+            <search>
+            <legend>Search for tracks using Deezer's API</legend>
             <label for="query-field">Keywords:</label>
             <input type="field" id="query-field" name="query-field" placeholder="Enter any keyword"/>
             <button type="button" aria-label="launch search" id="search-button">search</button>
-            </form>
+            </search>
+            <div id="results-div" style="height: fit-content; max-height: 60vh; display: flex; flex-direction: column; padding: 8px; gap: 4px; overflow-y: scroll;">
+            </div>
         `})
         this.addModalCancel()
-        this.countriesSeries.mapPolygons.template.events.on("click", this.handleCountryClick)
+        this.countriesSeries.mapPolygons.template.events.on("click", () => { this.countryModal.open() })
     }
 
     handleCountryClick = () => {
         this.countryModal.open();
-        const searchButton = document.getElementById("search-button")
-        const queryField = document.getElementById("query-field")
-        searchButton.onclick = async () => {
-            const results = await deezerHandler.search(queryField.value)
-            const resultItems = results.map(result => `<p>${result.title} - ${result.artist.name}</p><hr/>`)
-            const resultsDiv = document.createElement("div")
-            resultsDiv.innerHTML = resultItems.join("")
-            this.countryModal.getPrivate("content").appendChild(resultsDiv)
-        }
+
     }
 
 
