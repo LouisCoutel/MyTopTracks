@@ -2,6 +2,7 @@ import * as am5 from "@amcharts/amcharts5";
 import * as am5map from "@amcharts/amcharts5/map";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 import am5themes_Responsive from "@amcharts/amcharts5/themes/Responsive";
+import deezerHandler from "../providers/DeezerAPIHandler";
 
 class AmMap {
     constructor() {
@@ -87,12 +88,12 @@ class AmMap {
         )
     }
 
-    addModalCancel() {
+    addModalCancel = () => {
         const cancelButton = document.createElement("input")
         cancelButton.type = "button"
         cancelButton.value = "cancel"
         cancelButton.onclick = () => {
-            this.amMap.countryModal.cancel()
+            this.countryModal.cancel()
         }
         this.countryModal.getPrivate("content").appendChild(cancelButton)
     }
@@ -111,11 +112,14 @@ class AmMap {
         this.countriesSeries.mapPolygons.template.events.on("click", this.handleCountryClick)
     }
 
-    handleCountryClick() {
-        this.amMap.countryModal.open();
-        const queryField = this.amMap.countryModal.getPrivate("content").getElementById("query-field")
-        const searchButton = this.amMap.countryModal.getPrivate("content").getElementById("search-button")
-        searchButton.onclick = () => { this.VM.search(queryField.value) }
+    handleCountryClick = () => {
+        this.countryModal.open();
+        const searchButton = document.getElementById("search-button")
+        const queryField = document.getElementById("query-field")
+        searchButton.onclick = async () => {
+            const results = await deezerHandler.search(queryField.value)
+            console.log(results)
+        }
     }
 
 

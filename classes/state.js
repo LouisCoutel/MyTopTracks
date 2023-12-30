@@ -1,55 +1,68 @@
-const propsToEffects = {}
-const dirtyEffects = []
-let currentEffect
-let queued = false
-
-export function createState(state) {
-    return new Proxy(state, {
-        get(obj, prop) {
-            onGet(prop)
-            return obj[prop]
-        },
-        set(obj, prop, value) {
-            obj[prop] = value
-            onSet(prop, value)
-            return true
-        },
-        ownKeys(obj) {
-            return Reflect.ownKeys(obj)
-        }
-    })
-}
-
-export function onGet(prop) {
-    if (currentEffect) {
-        const effects = propsToEffects[prop] ?? (propsToEffects[prop] = [])
-        effects.push(currentEffect)
+export default class State {
+    #propsToEffects
+    #dirtyEffects
+    #queued
+    #currentEffect
+    #originalObject
+    constructor(state) {
+        this.#propsToEffects = {}
+        this.#dirtyEffects = []
+        this.#queued = false
+        this.state = this.createState(state)
+        this.#originalObject = state
     }
-}
 
-export function flush() {
-    while (dirtyEffects.length) {
-        dirtyEffects.shift()()
+    createState = (state) => {
+        return new Proxy(state, this.handler)
     }
-}
 
-export function onSet(prop, value) {
-    if (propsToEffects[prop]) {
-        dirtyEffects.push(...propsToEffects[prop])
-        if (!queued) {
-            queued = true
-            queueMicrotask(() => {
-                queued = false
-                flush()
-            })
+    handler = () => {
+        return {
+            get(obj, prop) {
+                this.onGet(prop)
+                return obj[prop]
+            },
+            set(obj, prop, value) {
+                obj[prop] = value
+                this.onSet(prop, value)
+                return true
+            },
+            ownKeys(obj) {
+                return Reflect.ownKeys(obj)
+            }
         }
     }
-}
+    onGet(prop) {
+        if (this.#currentEffect) {
+            const effects = this.#propsToEffects[prop] ?? (this.#propsToEffects[prop] = [])
+            effects.push(this.#currentEffect)
+        }
+    }
 
-export function createEffect(effect) {
-    currentEffect = effect
-    effect()
-    currentEffect = undefined
+    onSet(prop, value) {
+        if (this.#propsToEffects[prop]) {
+            this.#dirtyEffects.push(...this.#propsToEffects[prop])
+            if (!queued) {
+                this.#queued = true
+                queueMicrotask(() => {
+                    this.#queued = false
+                    this.flush()
+                })
+            }
+        }
+    }
+
+    flush() {
+        while (this.#dirtyEffects.length) {
+            this.#dirtyEffects.shift()()
+        }
+    }
+
+    createEffect(effect) {
+        this.#currentEffect = effect
+        effect()
+        this.#currentEffect = undefined
+    }
 }
 
 

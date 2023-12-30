@@ -3,6 +3,7 @@ import CountryAmData from "../classes/country";
 import Loader from '../components/loader'
 import AmMap from "../classes/AmCharts";
 import { object } from "@amcharts/amcharts5";
+import State from "../classes/state";
 class View {
     constructor() {
         this.amMap = new AmMap()
@@ -16,13 +17,12 @@ class View {
 
     }
 
-    render(countries) {
-        const countriesAmData = []
-        for (const key of Object.keys(countries)) {
-            countriesAmData.push(new CountryAmData(countries[key]))
-        }
-        console.log(countriesAmData)
-        this.amMap.setCountriesData(countriesAmData)
+    renderMap(countries) {
+        console.log(countries)
+        this.amMap.setCountriesData(countries)
+    }
+
+    renderSearchResults(results) {
     }
 
     setVM(VM) {

@@ -47,7 +47,7 @@ html {
   justify-content: center;
   align-items: center;
   display: none;
-  transition: opacity 3s ease-out;
+  transition: opacity 2s ease-out;
 }
 
 #loader.transition {
