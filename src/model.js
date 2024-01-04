@@ -10,10 +10,6 @@ class Model extends Observable {
     this.searchResults = []
   }
 
-  setVM(VM) {
-    this.VM = VM
-  }
-
   async getAllTracks() {
     this.tracks = await supabase.getAll()
     this.notify(this)

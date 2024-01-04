@@ -1,4 +1,5 @@
 
+import supabase from "./supabaseClient"
 class DeezerAPIHandler {
   constructor() {
     this.options = {
@@ -31,17 +32,15 @@ class DeezerAPIHandler {
   }
 
   async addTrack(track, country) {
-    console.log(track.title)
     const isInDb = await this.supabase.getTrack(track.id)
     if (await isInDb == undefined) {
-      console.log(track.title, "color:blue")
       const albumDetails = await this.deezer.getAlbumDetails(track.album.id)
       const genres = albumDetails.genres ? albumDetails.genres.data.map(genre => genre.name) : null
       const trackData = new TrackData(track)
       const albumData = new AlbumData(track, genres)
       const artistData = new ArtistData(track, countryId)
 
-      await this.supabase.insertSequence(artistData, albumData, trackData)
+      await supabase.insertSequence(artistData, albumData, trackData)
     }
   }
 }

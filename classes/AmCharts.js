@@ -100,13 +100,13 @@ class AmMap {
     setSearchModal() {
         this.countryModal = am5.Modal.new(this.root, {
             content: `<h3>Suggest me a track!</h3>
-            <search>
-            <legend>Search for tracks using Deezer's API</legend>
+            <legend style="margin-top: 8px;">Search for tracks using Deezer's API</legend>
+            <search style="display: flex; gap: 8px; margin-top: 8px;">
             <label for="query-field">Keywords:</label>
-            <input type="field" id="query-field" name="query-field" placeholder="Enter any keyword"/>
+            <input type="field" id="query-field" name="query-field" placeholder="Enter any keyword" style="flex-grow: 1;"/>
             <button type="button" aria-label="launch search" id="search-button">search</button>
             </search>
-            <div id="results-div" style="height: fit-content; max-height: 60vh; display: flex; flex-direction: column; padding: 8px; gap: 4px; overflow-y: scroll;">
+            <div id="results-div" style="height: 30vh; width: 50vw; display: flex; flex-direction: column; padding: 8px; gap: 4px; overflow-y: scroll;">
             </div>
         `})
         this.addModalCancel()
