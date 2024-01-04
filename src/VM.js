@@ -2,20 +2,30 @@ import { indexOf } from "@amcharts/amcharts5/.internal/core/util/Array.js"
 import Country from "../classes/country"
 import Item from "../classes/item"
 import * as am5 from "@amcharts/amcharts5";
-import State from "../classes/state"
+import state from "../classes/state"
 import CountryAmData from "../classes/country";
+import Observable from "../classes/Observable";
+import deezerHandler from "../providers/DeezerAPIHandler";
 
-export default class VM {
-    constructor(view, model) {
-        this.view = view
+export default class VM extends Observable {
+    constructor(model) {
+        super()
         this.model = model
         this.filter = undefined
         this.trackSelection = this.pickRandomTracks
         this.numberSelection = 1
-        this.mapState = new State({ countries: [] })
-        this.countries = this.mapState.state.countries
-        this.searchState = new State({ results: [] })
-        this.searchResults = this.searchState.state.results
+        this.amData
+        this.searchResults
+        this.model.addObserver(this)
+    }
+    async getSearchResults(query) {
+        const results = await deezerHandler.search(query)
+        this.searchResults = results
+        this.notify(this)
+    }
+    update(data) {
+        this.amData = this.setAmData(data.tracks)
+        this.notify(this)
     }
 
     setUrl(token) {
@@ -26,48 +36,38 @@ export default class VM {
         return Math.round(Math.random() * (arr.length - 1))
     }
 
-    setActiveCountries(filter) {
-        if (filter) {
-            this.countries = filter
-        } else {
-            const unfilteredCountries = this.model.tracks.map(track => {
-                if (track.country_id) { return { id: track.country_id } }
-            })
-
-            this.countries = unfilteredCountries.filter((country, index, self) =>
-                index === self.findIndex((t) => (
-                    t.id === country.id
-                ))
-            )
-        }
-        this.mapState.createEffect(() => {
-            const amData = []
-            this.countries.forEach((country) => {
-                const tracks = this.trackSelection(this.numberSelection, country.id)
-                amData.push(new CountryAmData({ id: country.id, tracks: tracks }))
-            })
-            this.view.renderMap(amData)
+    getCountries(tracks) {
+        const unfilteredCountries = tracks.map(track => {
+            if (track.country_id) { return { id: track.country_id } }
         })
+        return unfilteredCountries.filter((country, index, self) =>
+            index === self.findIndex((t) => (
+                t.id === country.id
+            ))
+        )
+    }
+
+    setAmData(tracks) {
+        const activeCountries = this.getCountries(tracks)
+        const data = []
+        activeCountries.forEach((country) => {
+            const tracks = this.trackSelection(this.numberSelection, country.id)
+            data.push(new CountryAmData({ id: country.id, tracks: tracks }))
+        })
+        return data
     }
 
     pickRandomTracks(numberOfTracks, country) {
-        const allTracks = this.model.tracks.filter(track => track.country_id == country)
+        const allTracks = this.model.tracks?.filter(track => track.country_id == country)
         const randomTracks = []
         for (let i = 0; i < numberOfTracks; i++) {
             const rand = this.pickRandomEntry(allTracks)
-            if (allTracks[rand] && (randomTracks.includes(allTracks[rand]) == false)) {
+            if (allTracks?.[rand] && (randomTracks?.includes(allTracks[rand]) == false)) {
                 randomTracks.push(allTracks[rand])
             }
         }
         return randomTracks
     }
-
-
-    // async setCountryAmChartsSetting() {
-    //     this.view.render(this.activeCountries)
-    //     console.log(this.activeCountries)
-    // }
-
 
     checkCountry(code) {
         return this.countries.some(country => country.id == code)
@@ -76,6 +76,4 @@ export default class VM {
     matchCountry(code) {
         return this.countries.find(country => country.id == code)
     }
-
-
 }

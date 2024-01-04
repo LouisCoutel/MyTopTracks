@@ -1,18 +1,15 @@
-export default class State {
+class State {
     #propsToEffects
     #dirtyEffects
     #queued
     #currentEffect
-    #originalObject
-    constructor(state) {
+    constructor() {
         this.#propsToEffects = {}
         this.#dirtyEffects = []
         this.#queued = false
-        this.state = this.createState(state)
-        this.#originalObject = state
     }
 
-    createState = (state) => {
+    create(state) {
         return new Proxy(state, this.handler)
     }
 
@@ -42,7 +39,7 @@ export default class State {
     onSet(prop, value) {
         if (this.#propsToEffects[prop]) {
             this.#dirtyEffects.push(...this.#propsToEffects[prop])
-            if (!queued) {
+            if (!this.#queued) {
                 this.#queued = true
                 queueMicrotask(() => {
                     this.#queued = false
@@ -65,5 +62,7 @@ export default class State {
     }
 }
 
+const state = new State()
+export default state
 
 

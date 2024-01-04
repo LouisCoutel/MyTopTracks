@@ -19,6 +19,9 @@ class Loader {
     }
     removeSelf() {
         document.body.removeChild(this.loaderElement)
+        this.loaderElement.classList.toggle("transition")
+        this.loaderElement.classList.toggle("loaded",)
+
     }
 }
 

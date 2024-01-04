@@ -1,19 +1,22 @@
 import deezerHandler from "../providers/DeezerAPIHandler.js"
 import supabase from "../providers/supabaseClient.js"
-class Model {
+import state from "../classes/state.js"
+import Observable from "../classes/Observable.js"
+
+class Model extends Observable {
   constructor() {
-    this.availableCountries = []
+    super()
+    this.tracks = []
+    this.searchResults = []
   }
+
   setVM(VM) {
     this.VM = VM
   }
 
-  setDeezerToken(token) {
-    this.deezer.token = token
-  }
   async getAllTracks() {
     this.tracks = await supabase.getAll()
-    console.log(this.tracks[0])
+    this.notify(this)
   }
 }
 

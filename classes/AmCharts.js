@@ -115,7 +115,7 @@ class AmMap {
 
     handleCountryClick = () => {
         this.countryModal.open();
-
+        this.countryModal.getPrivate("content").setAttribute("style", "opacity: 100;")
     }
 
 

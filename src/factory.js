@@ -9,26 +9,6 @@ class SingletonFactory {
         this.model
         this.app
     }
-    #createCtrl() {
-        this.ctrl = new VM(this.view, this.model)
-        this.ctrl.constructor = () => { return this.ctrl }
-    }
-    getCtrl() {
-        if (this.ctrl == null) {
-            this.#createCtrl()
-            return this.ctrl
-        } else { return this.ctrl }
-    }
-    #createView() {
-        this.view = new View()
-        this.view.constructor = () => { return this.view }
-    }
-    getView() {
-        if (this.view == null) {
-            this.#createView()
-            return this.view
-        } else { return this.view }
-    }
     #createModel() {
         this.model = new Model
         this.model.constructor = () => { return this.model }
@@ -39,14 +19,32 @@ class SingletonFactory {
             return this.model
         } else { return this.model }
     }
+    #createCtrl() {
+        this.ctrl = new VM(this.model)
+        this.ctrl.constructor = () => { return this.ctrl }
+    }
+    getCtrl() {
+        if (this.ctrl == null) {
+            this.#createCtrl()
+            return this.ctrl
+        } else { return this.ctrl }
+    }
+    #createView() {
+        this.view = new View(this.ctrl)
+        this.view.constructor = () => { return this.view }
+    }
+    getView() {
+        if (this.view == null) {
+            this.#createView()
+            return this.view
+        } else { return this.view }
+    }
     #createApp() {
         this.app = {
             model: this.getModel(),
+            VM: this.getCtrl(),
             view: this.getView(),
-            VM: this.getCtrl()
         }
-        this.app.view.setVM(this.app.VM)
-        this.app.model.setVM(this.app.VM)
         this.app.constructor = () => { return this.app }
     }
     getApp() {
