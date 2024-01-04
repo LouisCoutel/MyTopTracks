@@ -2,10 +2,12 @@ import * as am5 from "@amcharts/amcharts5";
 import * as am5map from "@amcharts/amcharts5/map";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 import am5themes_Responsive from "@amcharts/amcharts5/themes/Responsive";
+import state from "./state";
 
 class AmMap {
-    constructor() {
+    constructor(view) {
         this.root = am5.Root.new("chartdiv")
+        this.view = view
     }
 
     async buildSequence(handlers) {
@@ -99,7 +101,7 @@ class AmMap {
 
     setSearchModal() {
         this.countryModal = am5.Modal.new(this.root, {
-            content: `<h3>Suggest me a track!</h3>
+            content: `<h3 id="modal-heading"></h3>
             <legend style="margin-top: 8px;">Search for tracks using Deezer's API</legend>
             <search style="display: flex; gap: 8px; margin-top: 8px;">
             <label for="query-field">Keywords:</label>
@@ -110,10 +112,16 @@ class AmMap {
             </div>
         `})
         this.addModalCancel()
-        this.countriesSeries.mapPolygons.template.events.on("click", () => { this.countryModal.open() })
+        this.countriesSeries.mapPolygons.template.events.on("click", (ev) => { this.handleCountryClick(ev) })
     }
 
-    handleCountryClick = () => {
+    handleCountryClick = (ev) => {
+        this.view.currentCountry.element = ev.target
+        state.createEffect(() => {
+            this.view.currentCountry.id = this.view.currentCountry.element.dataItem.dataContext.id
+            this.view.currentCountry.name = this.view.currentCountry.element.dataItem.dataContext.name
+            this.view.setModalHeading()
+        })
         this.countryModal.open();
         this.countryModal.getPrivate("content").setAttribute("style", "opacity: 100;")
     }

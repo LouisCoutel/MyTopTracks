@@ -1,10 +1,11 @@
 export class TrackData {
-    constructor(track, isLoved) {
+    constructor(track, isLoved, isSuggested) {
         this.title = track.title
         this.deezer_id = track.id
         this.album_id = track.album.id
         this.artist_id = track.artist.id
         this.is_loved_track = isLoved
+        this.is_suggested_track = isSuggested
     }
 }
 

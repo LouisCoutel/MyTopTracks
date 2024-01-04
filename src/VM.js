@@ -6,6 +6,8 @@ import state from "../classes/state"
 import CountryAmData from "../classes/country";
 import Observable from "../classes/Observable";
 import deezerHandler from "../providers/DeezerAPIHandler";
+import { AlbumData, ArtistData, TrackData } from "../classes/Data";
+import supabase from "../providers/supabaseClient";
 
 export default class VM extends Observable {
     constructor(model) {
@@ -75,5 +77,17 @@ export default class VM extends Observable {
 
     matchCountry(code) {
         return this.countries.find(country => country.id == code)
+    }
+    async addSuggested(track, country) {
+        const isInDb = await this.supabase.getTrack(track.id)
+        if (await isInDb == undefined) {
+            const albumDetails = await this.deezer.getAlbumDetails(track.album.id)
+            const genres = albumDetails.genres ? albumDetails.genres.data.map(genre => genre.name) : null
+            const trackData = new TrackData(track)
+            const albumData = new AlbumData(track, genres)
+            const artistData = new ArtistData(track, country, tags)
+            await supabase.insertSequence(artistData, albumData, trackData)
+            await this.model.getAllTracks()
+        }
     }
 }

@@ -10,7 +10,7 @@ import supabaseClient from "../providers/supabaseClient";
 class View {
     constructor(VM) {
         this.VM = VM
-        this.amMap = new AmMap()
+        this.amMap = new AmMap(this)
         this.amMap.buildSequence()
         this.loader = new Loader()
         this.loader.loaderElement.ontransitionend = () => {
@@ -25,11 +25,17 @@ class View {
         }
         this.loader.insertSelf(document.body)
         this.VM.addObserver(this)
+        this.currentCountry = state.create({ element: undefined })
     }
 
     update(data) {
         this.renderMap(data.amData)
         this.renderSearch(data.searchResults)
+    }
+
+    setModalHeading() {
+        const modalHeading = document.getElementById("modal-heading")
+        modalHeading.innerHTML = `Suggest me a track from ${this.currentCountry.name}!`
     }
 
     renderMap(countries) {
@@ -41,7 +47,7 @@ class View {
         if (resultsDiv) {
             const resultsHTML = results?.map(result => {
                 return `<article style="display: flex; gap: 8px; align-items: center;">
-                <img src="${result.album.cover}" style="width: 40px; border: 1 px solid black; border-radius: 4px;" alt="album cover" loading="lazy"/><p style="flex-grow: 1;">${result.title}</p><button onclick="" style="padding: 2px 4px; height: fit-content;">select</button></article>`
+                <img src="${result.album.cover}" style="width: 40px; border: 1 px solid black; border-radius: 4px;" alt="album cover" loading="lazy"/><p style="flex-grow: 1;">${result.title}</p><button onclick="${(ev) => { this.VM.addSuggested(result, this.currentCountry.id) }}" style="padding: 2px 4px; height: fit-content;">select</button></article>`
             })
             resultsDiv.innerHTML = resultsHTML?.join("") ?? ""
         }
