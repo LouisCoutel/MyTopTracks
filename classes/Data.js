@@ -10,12 +10,11 @@ export class TrackData {
 }
 
 export class ArtistData {
-    constructor(track, countryId, tags) {
+    constructor(track, countryId) {
         this.name = track.artist.name
         this.deezer_id = track.artist.id
         this.picture = track.artist.picture_medium
         this.country_id = countryId
-        this.tags = tags
     }
 }
 

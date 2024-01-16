@@ -16,6 +16,15 @@ class SupabaseClient {
         return data
     }
 
+    async getTrack(id) {
+        const { data, error } = await supabase
+            .from('tracks')
+            .select()
+            .eq("deezer_id", id)
+        if (error) { console.error(error) }
+        if (data[0]) { return data[0] }
+    }
+
     async getArtistsCountryId() {
         const { data, error } = await this.supabase.from('artists').select("country_id").neq("country_id", null)
         if (error) {
@@ -30,6 +39,38 @@ class SupabaseClient {
             console.log(error)
         }
         return data
+    }
+
+    async insertArtist(artistData) {
+        const { data, error } = await this.supabase
+            .from('artists')
+            .upsert(artistData)
+            .select()
+        if (error) { console.error(error) }
+        return data
+    }
+    async insertAlbum(albumData) {
+        const { data, error } = await this.supabase
+            .from('albums')
+            .upsert(albumData)
+            .select()
+        if (error) { console.error(error) }
+        return data
+    }
+
+    async insertTrack(trackData) {
+        const { data, error } = await this.supabase
+            .from('tracks')
+            .upsert(trackData)
+            .select()
+        if (error) { console.error(error) }
+        return data
+    }
+
+    async insertSequence(artistData, albumData, trackData) {
+        await this.insertArtist(artistData)
+        await this.insertAlbum(albumData)
+        await this.insertTrack(trackData)
     }
 }
 

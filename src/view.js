@@ -6,7 +6,7 @@ import { object } from "@amcharts/amcharts5";
 import state from "../classes/state";
 import deezerHandler from "../providers/DeezerAPIHandler";
 import supabaseClient from "../providers/supabaseClient";
-
+import SearchResult from "../components/SearchResult";
 class View {
     constructor(VM) {
         this.VM = VM
@@ -26,6 +26,7 @@ class View {
         this.loader.insertSelf(document.body)
         this.VM.addObserver(this)
         this.currentCountry = state.create({ element: undefined })
+        this.resultsElement = []
     }
 
     update(data) {
@@ -45,12 +46,18 @@ class View {
     renderSearch = (results) => {
         const resultsDiv = document.getElementById("results-div")
         if (resultsDiv) {
-            const resultsHTML = results?.map(result => {
-                return `<article style="display: flex; gap: 8px; align-items: center;">
-                <img src="${result.album.cover}" style="width: 40px; border: 1 px solid black; border-radius: 4px;" alt="album cover" loading="lazy"/><p style="flex-grow: 1;">${result.title}</p><button onclick="${(ev) => { this.VM.addSuggested(result, this.currentCountry.id) }}" style="padding: 2px 4px; height: fit-content;">select</button></article>`
+            while (resultsDiv.firstChild) {
+                resultsDiv.removeChild(resultsDiv.firstChild);
+            }
+            results?.forEach(result => {
+                const sr = new SearchResult(result, this.VM, this.currentCountry)
+                resultsDiv.appendChild(sr.element)
             })
-            resultsDiv.innerHTML = resultsHTML?.join("") ?? ""
         }
+    }
+
+    handleSelectClick = (result) => {
+        this.VM.addSuggested(result, this.currentCountry.id)
     }
 }
 

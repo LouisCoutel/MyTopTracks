@@ -14,17 +14,19 @@ export default class VM extends Observable {
         super()
         this.model = model
         this.filter = undefined
-        this.trackSelection = this.pickRandomTracks
+        this.trackSelection = this.showSuggested
         this.numberSelection = 1
         this.amData
         this.searchResults
         this.model.addObserver(this)
     }
+
     async getSearchResults(query) {
         const results = await deezerHandler.search(query)
         this.searchResults = results
         this.notify(this)
     }
+
     update(data) {
         this.amData = this.setAmData(data.tracks)
         this.notify(this)
@@ -54,7 +56,9 @@ export default class VM extends Observable {
         const data = []
         activeCountries.forEach((country) => {
             const tracks = this.trackSelection(this.numberSelection, country.id)
-            data.push(new CountryAmData({ id: country.id, tracks: tracks }))
+            if (tracks[0]) {
+                data.push(new CountryAmData({ id: country.id, tracks: tracks }))
+            }
         })
         return data
     }
@@ -71,6 +75,10 @@ export default class VM extends Observable {
         return randomTracks
     }
 
+    showSuggested(numberOfTracks, country) {
+        return this.model.tracks?.filter(track => ((track.country_id == country) && (track.is_suggested_track)))
+    }
+
     checkCountry(code) {
         return this.countries.some(country => country.id == code)
     }
@@ -78,14 +86,15 @@ export default class VM extends Observable {
     matchCountry(code) {
         return this.countries.find(country => country.id == code)
     }
+
     async addSuggested(track, country) {
-        const isInDb = await this.supabase.getTrack(track.id)
+        const isInDb = await supabase.get(track.id)
         if (await isInDb == undefined) {
-            const albumDetails = await this.deezer.getAlbumDetails(track.album.id)
+            const albumDetails = await deezerHandler.getAlbumDetails(track.album.id)
             const genres = albumDetails.genres ? albumDetails.genres.data.map(genre => genre.name) : null
-            const trackData = new TrackData(track)
+            const trackData = new TrackData(track, false, true)
             const albumData = new AlbumData(track, genres)
-            const artistData = new ArtistData(track, country, tags)
+            const artistData = new ArtistData(track, country)
             await supabase.insertSequence(artistData, albumData, trackData)
             await this.model.getAllTracks()
         }

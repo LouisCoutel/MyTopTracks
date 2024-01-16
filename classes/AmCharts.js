@@ -90,29 +90,24 @@ class AmMap {
     }
 
     addModalCancel = () => {
-        const cancelButton = document.createElement("input")
-        cancelButton.type = "button"
-        cancelButton.value = "cancel"
-        cancelButton.onclick = () => {
-            this.countryModal.cancel()
-        }
-        this.countryModal.getPrivate("content").appendChild(cancelButton)
+
     }
 
     setSearchModal() {
         this.countryModal = am5.Modal.new(this.root, {
-            content: `<h3 id="modal-heading"></h3>
-            <legend style="margin-top: 8px;">Search for tracks using Deezer's API</legend>
-            <search style="display: flex; gap: 8px; margin-top: 8px;">
-            <label for="query-field">Keywords:</label>
+            content: `
+            <h3 id="modal-heading"></h3><button id="modal-close-button">close</button>
+            <legend id="search-legend">Search for tracks using Deezer's API</legend>
+            <search id="search-div">
+            <label id="query-field-label" for="query-field">Keywords:</label>
             <input type="field" id="query-field" name="query-field" placeholder="Enter any keyword" style="flex-grow: 1;"/>
-            <button type="button" aria-label="launch search" id="search-button">search</button>
             </search>
-            <div id="results-div" style="height: 30vh; width: 50vw; display: flex; flex-direction: column; padding: 8px; gap: 4px; overflow-y: scroll;">
+            <div id="results-div">
             </div>
         `})
-        this.addModalCancel()
         this.countriesSeries.mapPolygons.template.events.on("click", (ev) => { this.handleCountryClick(ev) })
+        this.modalContent = this.countryModal.getPrivate("content")
+        this.modalContent.setAttribute("id", "modal-content")
     }
 
     handleCountryClick = (ev) => {
@@ -123,7 +118,10 @@ class AmMap {
             this.view.setModalHeading()
         })
         this.countryModal.open();
-        this.countryModal.getPrivate("content").setAttribute("style", "opacity: 100;")
+        const cancelButton = document.getElementById("modal-close-button")
+        cancelButton.onclick = () => {
+            this.countryModal.cancel()
+        }
     }
 
 
