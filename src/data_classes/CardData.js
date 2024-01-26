@@ -1,6 +1,6 @@
 import Card from "../components/card"
 
-class Item {
+class CardData {
     constructor(item, index) {
         {
             this.id = index
@@ -14,4 +14,4 @@ class Item {
     }
 }
 
-export default Item
+export default CardData

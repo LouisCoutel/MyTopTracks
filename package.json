@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "script.js",
-  "scripts": {},
+  "scripts": {
+    "lint": "eslint"
+  },
   "type": "module",
   "keywords": [],
   "author": "",
@@ -11,10 +13,11 @@
   "dependencies": {
     "@amcharts/amcharts5": "^5.5.7",
     "@amcharts/amcharts5-geodata": "^5.1.1",
-    "@supabase/supabase-js": "^2.38.5",
-    "prettier": "^3.0.3"
+    "@supabase/supabase-js": "^2.38.5"
   },
   "devDependencies": {
-    "eslint": "^8.52.0"
+    "eslint": "^8.52.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "3.2.4"
   }
 }

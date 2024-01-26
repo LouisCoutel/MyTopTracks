@@ -1,8 +1,8 @@
-import * as am5 from "@amcharts/amcharts5";
-import * as am5map from "@amcharts/amcharts5/map";
-import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
-import am5themes_Responsive from "@amcharts/amcharts5/themes/Responsive";
-import state from "./state";
+import * as am5 from "@amcharts/amcharts5"
+import * as am5map from "@amcharts/amcharts5/map"
+import am5themes_Animated from "@amcharts/amcharts5/themes/Animated"
+import am5themes_Responsive from "@amcharts/amcharts5/themes/Responsive"
+import state from "./State"
 
 class AmMap {
     constructor(view) {
@@ -10,12 +10,8 @@ class AmMap {
         this.view = view
     }
 
-    async buildSequence(handlers) {
-        this.root.setThemes([
-            am5themes_Animated.new(this.root),
-            am5themes_Responsive.new(this.root)
-        ]);
-
+    async buildSequence() {
+        this.root.setThemes([am5themes_Animated.new(this.root), am5themes_Responsive.new(this.root)])
         this.buildChart()
 
         const geoOutline = await this.getGeoOutline()
@@ -23,15 +19,15 @@ class AmMap {
 
         const geoCountries = await this.getGeoCountries()
         this.countriesSeries = await this.buildCountriesSeries(geoCountries)
+
         this.setSearchModal()
         this.buildTooltip()
         this.countriesSeries.set("tooltip", this.tooltip)
         this.setOutlineSeries()
         this.countriesSeries.mapPolygons.template.states.create("hover", {
-            fill: am5.color(0xffe500)
+            fill: am5.color(0xffe500),
         })
     }
-
 
     buildChart() {
         this.chart = this.root.container.children.push(
@@ -48,11 +44,12 @@ class AmMap {
                 maxPanOut: 0.07,
                 paddingLeftLeft: "20px",
             })
-        );
+        )
     }
 
     async getGeoOutline() {
         const worldOutlineLow = await import("@amcharts/amcharts5-geodata/worldOutlineLow")
+
         return worldOutlineLow.default
     }
 
@@ -71,11 +68,12 @@ class AmMap {
             shadowOffsetY: 4,
             shadowOffsetX: 0,
             shadowOpacity: 0.4,
-        });
+        })
     }
 
     async getGeoCountries() {
         const am5geodata_worldLow = await import("@amcharts/amcharts5-geodata/worldLow")
+
         return am5geodata_worldLow.default
     }
 
@@ -89,9 +87,7 @@ class AmMap {
         )
     }
 
-    addModalCancel = () => {
-
-    }
+    addModalCancel = () => {}
 
     setSearchModal() {
         this.countryModal = am5.Modal.new(this.root, {
@@ -104,26 +100,34 @@ class AmMap {
             </search>
             <div id="results-div">
             </div>
-        `})
-        this.countriesSeries.mapPolygons.template.events.on("click", (ev) => { this.handleCountryClick(ev) })
+        `,
+        })
+
+        this.countriesSeries.mapPolygons.template.events.on("click", (ev) => {
+            this.handleCountryClick(ev)
+        })
+
         this.modalContent = this.countryModal.getPrivate("content")
         this.modalContent.setAttribute("id", "modal-content")
     }
 
     handleCountryClick = (ev) => {
         this.view.currentCountry.element = ev.target
+
         state.createEffect(() => {
             this.view.currentCountry.id = this.view.currentCountry.element.dataItem.dataContext.id
             this.view.currentCountry.name = this.view.currentCountry.element.dataItem.dataContext.name
             this.view.setModalHeading()
         })
-        this.countryModal.open();
+
+        this.countryModal.open()
+
         const cancelButton = document.getElementById("modal-close-button")
+
         cancelButton.onclick = () => {
             this.countryModal.cancel()
         }
     }
-
 
     setCountriesData(data) {
         this.countriesSeries.mapPolygons.template.setAll({ templateField: "enabledSettings" })
@@ -134,11 +138,11 @@ class AmMap {
         this.tooltip = am5.Tooltip.new(this.root, {
             getFillFromSprite: false,
             labelText: '{"id"}',
-        });
+        })
 
         this.tooltip.get("background").setAll({
             strokeOpacity: 0,
-        });
+        })
     }
 }
 

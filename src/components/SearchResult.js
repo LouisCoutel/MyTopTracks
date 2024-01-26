@@ -16,6 +16,7 @@ export default class SearchResult {
         this.appendChildren()
         this.setEvent()
     }
+
     setAttributes() {
         this.element.setAttribute("class", "search-result")
         this.cover.setAttribute("class", "search-result-cover")
@@ -24,12 +25,14 @@ export default class SearchResult {
         this.title.setAttribute("class", "sr-title")
         this.selectButton.setAttribute("class", "sr-select-button")
     }
+
     setValues() {
         this.cover.setAttribute("src", this.data.album.cover)
         this.artist.innerText = this.data.artist.name
         this.title.innerText = this.data.title
         this.selectButton.innerHTML = "select"
     }
+
     appendChildren() {
         this.element.appendChild(this.cover)
         this.element.appendChild(this.detailsSection)
@@ -40,12 +43,14 @@ export default class SearchResult {
         this.detailsSection.appendChild(this.title)
         this.element.appendChild(this.selectButton)
     }
+
     setEvent() {
         this.selectButton.onclick = () => {
             this.VM.addSuggested(this.data, this.country)
         }
     }
-    create(value) {
+
+    static create(value) {
         return document.createElement(value)
     }
 }

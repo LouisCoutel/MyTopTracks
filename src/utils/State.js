@@ -3,6 +3,7 @@ class State {
     #dirtyEffects
     #queued
     #currentEffect
+
     constructor() {
         this.#propsToEffects = {}
         this.#dirtyEffects = []
@@ -26,9 +27,10 @@ class State {
             },
             ownKeys(obj) {
                 return Reflect.ownKeys(obj)
-            }
+            },
         }
     }
+
     onGet(prop) {
         if (this.#currentEffect) {
             const effects = this.#propsToEffects[prop] ?? (this.#propsToEffects[prop] = [])
@@ -36,7 +38,7 @@ class State {
         }
     }
 
-    onSet(prop, value) {
+    onSet(prop) {
         if (this.#propsToEffects[prop]) {
             this.#dirtyEffects.push(...this.#propsToEffects[prop])
             if (!this.#queued) {
@@ -64,5 +66,3 @@ class State {
 
 const state = new State()
 export default state
-
-
