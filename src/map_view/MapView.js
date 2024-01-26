@@ -1,6 +1,6 @@
 import Loader from "../components/Loader"
-import AmMap from "../classes/AmCharts"
-import state from "../classes/state"
+import AmMap from "../data_classes/AmCharts"
+import state from "../utils/State"
 import SearchResult from "../components/SearchResult"
 
 class View {

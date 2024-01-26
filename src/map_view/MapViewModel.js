@@ -1,7 +1,7 @@
-import CountryAmData from "../classes/country"
-import Observable from "../classes/Observable"
-import deezerHandler from "../clients/DeezerAPIHandler"
-import { AlbumData, ArtistData, TrackData } from "../classes/Data"
+import CountryAmData from "../data_classes/CountryAmData"
+import Observable from "../utils/Observable"
+import deezerHandler from "../clients/DeezerClient"
+import { AlbumData, ArtistData, TrackData } from "../data_classes/MusicData"
 import supabase from "../clients/supabaseClient"
 
 export default class VM extends Observable {

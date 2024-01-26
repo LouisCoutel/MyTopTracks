@@ -1,4 +1,4 @@
-import CardList from "../../components/cardList"
+import CardList from "../components/item cards/CardList"
 import * as am5 from "@amcharts/amcharts5"
 
 class CountryAmData {
