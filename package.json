@@ -1,8 +1,8 @@
 {
-    "name": "projet-collectif-dataviz-sonia-bastien-gilbert-louis",
+    "name": "mytoptracks",
     "version": "1.0.0",
     "description": "",
-    "main": "script.js",
+    "main": "app.js",
     "scripts": {
         "lint": "eslint"
     },

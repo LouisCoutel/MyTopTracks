@@ -1,4 +1,4 @@
-import SingletonFactory from "./src/factory.js"
+import SingletonFactory from "./src/utils/SingletonFactory"
 
 const factory = new SingletonFactory()
 
