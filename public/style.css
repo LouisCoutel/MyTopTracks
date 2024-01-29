@@ -11,7 +11,7 @@ html {
 
 body {
     align-items: center;
-    background: radial-gradient(50% 50% at 50% 50%, #2bc1e2 0%, rgba(43, 193, 226, 0.64) 100%);
+    background: radial-gradient(50% 50% at 50% 50%, #2bc1e2 0%, rgb(43 193 226 / 64%) 100%);
     display: flex;
     flex-direction: column;
     font-family: "PP Neue Montreal", sans-serif;
@@ -37,10 +37,7 @@ body {
 
 #loader {
     position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    inset: 0;
     width: 100vw;
     height: 100vh;
     justify-content: center;
@@ -65,11 +62,12 @@ body {
     position: relative;
     animation: rotate 1s linear infinite;
 }
+
 .spinner::before {
     content: "";
     box-sizing: border-box;
     position: absolute;
-    inset: 0px;
+    inset: 0;
     border-radius: 50%;
     border: 5px solid #e24d2c;
     animation: prixClipFix 3s ease-out infinite;
@@ -81,19 +79,23 @@ body {
     }
 }
 
-@keyframes prixClipFix {
+@keyframes prix-clip-fix {
     0% {
         clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
     }
+
     25% {
         clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
     }
+
     50% {
         clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
     }
+
     75% {
         clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%);
     }
+
     100% {
         clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 0);
     }
@@ -138,12 +140,12 @@ b.font-medium {
 
 .chart-card {
     backdrop-filter: blur(4px);
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255 255 255 / 50%);
     border-bottom: 2px solid #000;
     border-radius: 7px;
     box-shadow:
-        0 -1px 10px 4px rgba(0, 0, 0, 0.1),
-        0 10px 8px rgba(0, 0, 0, 0.25);
+        0 -1px 10px 4px rgba(0 0 0 / 10%),
+        0 10px 8px rgba(0 0 0 / 25%);
     display: flex;
     gap: 4px;
     height: fit-content;
@@ -156,8 +158,8 @@ b.font-medium {
     background-size: contain;
     border: 1px solid #000;
     box-shadow:
-        inset -2px -2px 2px 1px rgba(0, 0, 0, 0.15),
-        inset 2px 2px 2px 1px rgba(0, 0, 0, 0.15);
+        inset -2px -2px 2px 1px rgba(0 0 0 / 15%),
+        inset 2px 2px 2px 1px rgba(0 0 0 / 15%);
     border-radius: 5px;
     display: flex;
     flex-shrink: 0;
@@ -194,34 +196,39 @@ b.font-medium {
     font-size: 13px;
 }
 
-@media screen and (min-width: 600px) {
+@media screen and (width >= 600px) {
     .conseilnav-p {
         display: inline;
     }
 }
 
-@media screen and (min-width: 800px) {
+@media screen and (width >= 800px) {
     .chart-card {
         max-width: 300px;
         padding: 8px;
         gap: 8px;
     }
+    
     .card-img-div {
         width: 64px;
         height: 64px;
     }
+
     .card-album,
     .card-artist,
     .card-track {
         width: 230px;
         font-size: 16px;
     }
+
     .card-track {
         font-size: 20px;
     }
+
     .card-artist {
         font-size: 18px;
     }
+
     .conseilnav-p {
         width: 40ch;
         font-size: 18px;
@@ -252,6 +259,14 @@ button {
     color: white;
     background-color: #e24d2c;
 }
+
+.sr-select-button {
+    color: #2bc1e2;
+    height: fit-content;
+    cursor: pointer;
+    border: 1px solid #2bc1e2;
+}
+
 .sr-select-button:hover {
     color: white;
     background-color: #2bc1e2;
@@ -273,7 +288,7 @@ button {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    padding: 16px 0 16px 0;
+    padding: 16px 0;
     overflow-y: scroll;
     scrollbar-width: none;
 }
@@ -287,7 +302,7 @@ button {
 }
 
 .search-result:hover {
-    background-color: #eeeeee;
+    background-color: #eee;
     padding: 4px;
 }
 
@@ -297,15 +312,11 @@ button {
     gap: 4px;
 }
 
+
+
 .search-result-cover {
     width: 40px;
     border: 1 px solid black;
     border-radius: 4px;
 }
 
-.sr-select-button {
-    color: #2bc1e2;
-    height: fit-content;
-    cursor: pointer;
-    border: 1px solid #2bc1e2;
-}

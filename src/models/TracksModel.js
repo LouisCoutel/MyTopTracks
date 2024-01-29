@@ -1,5 +1,5 @@
-import supabase from "../clients/supabaseClient.js"
-import Observable from "../data_classes/Observable.js"
+import supabase from "../clients/SupabaseClient.js"
+import Observable from "../utils/Observable.js"
 
 class Model extends Observable {
     constructor() {

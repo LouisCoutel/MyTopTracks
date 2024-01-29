@@ -1,8 +1,8 @@
 import CountryAmData from "../data_classes/CountryAmData"
 import Observable from "../utils/Observable"
-import deezerHandler from "../clients/DeezerClient"
+import deezerClient from "../clients/DeezerClient"
 import { AlbumData, ArtistData, TrackData } from "../data_classes/MusicData"
-import supabase from "../clients/supabaseClient"
+import supabase from "../clients/SupabaseClient"
 
 export default class VM extends Observable {
     constructor(model) {
@@ -17,7 +17,7 @@ export default class VM extends Observable {
     }
 
     async getSearchResults(query) {
-        const results = await deezerHandler.search(query)
+        const results = await deezerClient.search(query)
 
         this.searchResults = results
         this.notify(this)
@@ -93,7 +93,7 @@ export default class VM extends Observable {
         const isInDb = await supabase.get(track.id)
 
         if ((await isInDb) == undefined) {
-            const albumDetails = await deezerHandler.getAlbumDetails(track.album.id)
+            const albumDetails = await deezerClient.getAlbumDetails(track.album.id)
             const genres = albumDetails.genres ? albumDetails.genres.data.map((genre) => genre.name) : null
             const trackData = new TrackData(track, false, true)
             const albumData = new AlbumData(track, genres)
