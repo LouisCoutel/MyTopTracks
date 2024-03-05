@@ -14,6 +14,7 @@ The app showcases random tracks from my "favorite tracks" Deezer playlist on an 
 ### Get started
 If a country is represented, it's colored off-white. Hover your cursor over the landmass to see a track's informations pop up.
 
+#### Suggesting a track
 Countries that have no matching tracks are colored in beige. I'm sure these countries have produced plenty of great songs, so you can click on them to suggest a track.
 You can also do this for other countries, but I encourage you to help me fill the blanks first!
 
