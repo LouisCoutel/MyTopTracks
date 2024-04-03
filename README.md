@@ -1,4 +1,4 @@
-![banner](https://github.com/LouisCoutel/MyTopTracks/blob/WriteReadme/MTTCover.png)
+![banner](https://github.com/LouisCoutel/MyTopTracks/blob/main/MTTCover.png)
 
 ## About
 This started as a collective project at Ada Tech School centered around API requests and data visualization.
